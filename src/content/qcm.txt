@@ -1,0 +1,497 @@
+#### QCM id=blanc1 | title=QCM blanc n°1 — Films | duree=20 | dataset=films | desc=Le plus proche de l'annale : même fichier de films, autres questions.
+Même format que l'examen du 18/11/2025 : 5 questions de Python de base, puis 7 questions pandas sur le DataFrame `film_df`, lu depuis un fichier CSV (index créé automatiquement : 0, 1, 2…).
+
+## Questions sur les notions de bases de python
+
+@@ id=b1q01 | theme=structures | type=single
+Quel est le type de la variable suivante : `ma_var = [("Pommes", 10), ("Bananes", 3), ("Dattes", 5)]` ?
+[ ] Dictionnaire
+[ ] Tuple de listes
+[x] Liste de tuples
+[ ] Liste de listes
+>>> Les crochets extérieurs font une **liste** ; chaque élément entre parenthèses est un **tuple**. `type(ma_var)` → list, `type(ma_var[0])` → tuple.
+
+@@ id=b1q02 | theme=listes | type=multi
+Soit `ma_var = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]`. Chaque instruction est appliquée à cette liste d'origine. Quelles affirmations sont correctes ?
+[x] `print(ma_var[2])` affiche "Mercredi"
+[x] `print(ma_var[-1])` affiche "Dimanche"
+[ ] `print(ma_var[1:3])` affiche "Mardi", "Mercredi", "Jeudi"
+[x] `ma_var.insert(0, "Férié")` ajoute "Férié" en début de liste
+[ ] `x = ma_var.remove("Samedi")` met "Samedi" dans `x`
+[x] `len(ma_var[::2])` vaut 4
+>>> `[1:3]` → indices 1 et 2 seulement (Mardi, Mercredi). `remove` renvoie `None` (c'est `pop` qui renvoie l'élément). `[::2]` prend les indices 0, 2, 4, 6 → 4 éléments.
+
+@@ id=b1q03 | theme=controle | type=multi
+On considère le code suivant. Quelles affirmations sont correctes ?
+```python
+valeurs = [4, -2, 7, 0, 9, 12, -5, 3]
+total = 0
+for v in valeurs:
+    if v < 0:
+        continue
+    if v > 10:
+        break
+    total += v
+print(total)
+```
+[x] Le code affiche 20
+[ ] Le code affiche 23
+[x] Si on remplace `break` par `continue`, le code affiche 23
+[ ] Les valeurs -2 et -5 sont ajoutées à `total`
+[x] La valeur 3 n'est jamais lue par la boucle
+[x] Si on remplace `continue` par `break`, le code affiche 4
+>>> Trace : 4 → 4 ; -2 ignoré (continue) ; 7 → 11 ; 0 → 11 ; 9 → 20 ; 12 > 10 → **break**. Total 20, et -5 et 3 ne sont jamais lus. Avec `continue` à la place de `break` : 12 est sauté et on continue : 20 + 3 = 23. Avec `break` à la place du premier `continue` : on s'arrête dès -2 → 4.
+
+@@ id=b1q04 | theme=comprehension | type=multi
+List comprehension : quelles affirmations sont correctes ?
+[x] `[x * 2 for x in range(1, 5)]` vaut `[2, 4, 6, 8]`
+[x] `[c.upper() for c in "abc" if c != "b"]` vaut `['A', 'C']`
+[ ] `[x if x % 2 == 0 else 0 for x in [1, 2, 3, 4]]` vaut `[2, 4]`
+[x] `[x for x in range(10, 0, -3)]` vaut `[10, 7, 4, 1]`
+[ ] `[x + y for x, y in [[1, 2], [3, 4]]]` vaut `[4, 6]`
+>>> Avec `if … else` avant le `for`, **tous** les éléments sont gardés : `[0, 2, 0, 4]`. La dernière additionne les deux éléments de chaque sous-liste : `[3, 7]`.
+
+@@ id=b1q05 | theme=fonctions | type=single
+Que vaut `c` après ce code ?
+```python
+def stats(liste):
+    return min(liste), max(liste), sum(liste) / len(liste)
+
+a, b, c = stats([4, 8, 6])
+```
+[ ] 6
+[x] 6.0
+[ ] (4, 8, 6.0)
+[ ] Une erreur : une fonction ne peut renvoyer qu'une seule valeur
+>>> La fonction renvoie un tuple de 3 valeurs, « déballé » dans a, b, c. `/` donne toujours un float : 18 / 3 = **6.0**.
+
+## Questions sur le traitement de données avec Pandas
+
+@@ id=b1q06 | theme=pd-filtre | type=single
+Quelle instruction donne le **nombre** de films sortis strictement après 2000 ?
+[x] `len(film_df[film_df["Annee_sortie"] > 2000])`
+[ ] `film_df[film_df["Annee_sortie"] > 2000].size`
+[ ] `film_df["Annee_sortie" > 2000].count()`
+[ ] `film_df.count(film_df["Annee_sortie"] > 2000)`
+>>> `len` d'un DataFrame = nombre de lignes (ici 6). `.size` = lignes × colonnes (36). `"Annee_sortie" > 2000` compare une chaîne à un entier → erreur.
+
+@@ id=b1q07 | theme=pd-filtre | type=multi
+Quelles instructions affichent les titres des **trois** films de Christopher Nolan (quelle que soit l'écriture du nom) ?
+[x] `film_df[film_df["Realisateur"].str.lower() == "christopher nolan"]["Titre"]`
+[ ] `film_df[film_df["Realisateur"] == "Christopher Nolan"]["Titre"]`
+[x] `film_df.loc[film_df["Realisateur"].str.lower() == "christopher nolan", "Titre"]`
+[ ] `film_df[film_df["Realisateur"].lower() == "christopher nolan"]["Titre"]`
+[x] `film_df[film_df["Realisateur"].isin(["Christopher Nolan", "christopher nolan"])]["Titre"]`
+>>> L'index 2 contient « christopher nolan » en minuscules : la comparaison exacte n'en trouve que 2. Une Series n'a pas de méthode `.lower()` (AttributeError) : il faut `.str.lower()`.
+
+@@ id=b1q08 | theme=pd-base | type=single
+Que fait apparaître `film_df.info()` pour la colonne `Budget_M` ?
+[ ] 14 non-null float64
+[x] 13 non-null float64
+[ ] 13 non-null int64
+[ ] 13 non-null object
+>>> 14 lignes dont une valeur manquante (Amélie Poulain) → 13 non-null. Les décimales (11.4, 9.5) et le NaN imposent `float64`.
+
+@@ id=b1q09 | theme=pd-nan | type=multi
+On veut remplacer les durées manquantes par la **médiane** des durées et homogénéiser les genres (« thriller » → « Thriller »). Quelles instructions conviennent ?
+[x] `film_df["Duree_mn"] = film_df["Duree_mn"].fillna(film_df["Duree_mn"].median())`
+[ ] `film_df["Duree_mn"].fillna(film_df["Duree_mn"].median())`
+[x] `film_df["Genre"] = film_df["Genre"].str.capitalize()`
+[ ] `film_df = film_df.fillna(film_df["Duree_mn"].median())`
+[x] `film_df["Genre"] = film_df["Genre"].map(lambda x: x.capitalize())`
+>>> Sans affectation, `fillna` ne modifie rien. `film_df.fillna(...)` sur tout le DataFrame remplirait aussi le titre, le réalisateur et le budget manquants par 142 ! `capitalize` transforme « thriller » en « Thriller » et laisse les autres genres inchangés.
+
+@@ id=b1q10 | theme=pd-agg | type=single
+Que renvoie `film_df.groupby("Genre")["Budget_M"].max()` ?
+[ ] Un nombre : le budget le plus élevé du fichier
+[x] Une Series indexée par les genres, contenant le budget maximal de chaque genre
+[ ] Un DataFrame contenant toutes les colonnes des films les plus chers
+[ ] Une erreur, car Budget_M contient une valeur manquante
+>>> Une valeur par groupe. Les NaN sont ignorés. Remarque : sans homogénéisation, « Thriller » et « thriller » forment **deux** groupes différents.
+
+@@ id=b1q11 | theme=pd-acces | type=multi
+Quelles affirmations sont correctes ?
+[x] `film_df.iloc[0, 0]` vaut "Inception"
+[x] `film_df.loc[1:3, "Titre"]` renvoie 3 titres
+[ ] `film_df.iloc[1:3, 0]` renvoie 3 titres
+[x] `film_df.loc[4, "Duree_mn"]` vaut 154.0 (et non 154) car la colonne contient une valeur manquante
+[x] `film_df["Titre"][11]` vaut "Interstellar"
+[ ] `film_df.iloc[:, -1]` renvoie la colonne Titre
+>>> loc : fin incluse (1, 2, 3) ; iloc : fin exclue (1, 2). La colonne Duree_mn a un NaN (Gladiator) → float64. `iloc[:, -1]` = **dernière** colonne : Duree_mn.
+
+@@ id=b1q12 | theme=pd-concat | type=single
+`nouveaux_df` contient 3 autres films avec les mêmes colonnes. Quelle instruction les ajoute à la suite de `film_df` avec un index renuméroté de 0 à 16 ?
+[x] `pd.concat([film_df, nouveaux_df], ignore_index=True)`
+[ ] `pd.concat([film_df, nouveaux_df], axis=1)`
+[ ] `pd.merge(film_df, nouveaux_df, on="Titre")`
+[ ] `film_df.join(nouveaux_df)`
+>>> Concaténation verticale + `ignore_index=True`. `axis=1` mettrait les colonnes côte à côte ; `merge` ne garderait que les titres communs ; `join` associe sur l'index.
+
+#### QCM id=blanc2 | title=QCM blanc n°2 — Communes | duree=20 | dataset=communes | desc=Fichier de population des communes (exercices du TD chapitre II).
+5 questions de Python de base, puis 7 questions pandas sur le DataFrame `communes_df` (index automatique 0, 1, 2…).
+
+## Questions sur les notions de bases de python
+
+@@ id=b2q01 | theme=bases | type=single
+Qu'affiche `print(17 // 5, 17 % 5)` ?
+[ ] 3.4 2
+[x] 3 2
+[ ] 3 3.4
+[ ] 2 3
+>>> `//` : quotient de la division entière (3) ; `%` : reste (17 = 3 × 5 + 2).
+
+@@ id=b2q02 | theme=bases | type=multi
+Soit `s = "Traitement de données"`. Quelles affirmations sont correctes ?
+[x] `s[0:10]` vaut `"Traitement"`
+[x] `s[-7:]` vaut `"données"`
+[ ] Après l'instruction `s.upper()`, la variable `s` contient `"TRAITEMENT DE DONNÉES"`
+[x] `s.title()` vaut `"Traitement De Données"`
+[x] `s.split(" ")` renvoie une liste de 3 éléments
+[ ] `s[1] + s[2]` vaut `"Tr"`
+>>> Les méthodes de chaîne ne modifient pas `s` (une chaîne est immuable) : il faudrait `s = s.upper()`. `s[1] + s[2]` = "r" + "a" = "ra".
+
+@@ id=b2q03 | theme=structures | type=multi
+Soit `d = {"Paris": 75, "Lyon": 69, "Marseille": 13}`. Quelles affirmations sont correctes ?
+[x] `d["Lyon"]` vaut 69
+[ ] `d[0]` vaut 75
+[x] `d["Lille"] = 59` ajoute une entrée au dictionnaire
+[ ] `for k in d: print(k)` affiche les numéros de département
+[x] `list(d.values())` vaut `[75, 69, 13]`
+[x] `d.pop("Paris")` supprime l'entrée Paris et renvoie 75
+>>> Accès par clé (`d[0]` → KeyError). Itérer sur un dictionnaire donne les **clés** (les villes).
+
+@@ id=b2q04 | theme=controle | type=multi
+On considère le code suivant. Quelles affirmations sont correctes ?
+```python
+n = 1
+compteur = 0
+while n < 100:
+    n = n * 3
+    compteur += 1
+print(n, compteur)
+```
+[x] Le code affiche `243 5`
+[ ] Le code affiche `81 4`
+[x] Le corps de la boucle est exécuté 5 fois
+[x] Si on remplace la condition par `n <= 81`, l'affichage est identique
+[x] Si on initialise `n = 0`, la boucle ne s'arrête jamais
+>>> n : 1 → 3 → 9 → 27 → 81 → 243. Quand n = 81, 81 < 100 est vrai : un dernier tour donne 243. Avec `n <= 81`, même chose. Avec n = 0 : 0 × 3 = 0 reste < 100 indéfiniment.
+
+@@ id=b2q05 | theme=numpy | type=single
+Avec `a = np.array([[1, 2], [3, 4]])` et `b = np.array([[1, 0], [0, 2]])`, que vaut `a * b` ?
+[x] `[[1, 0], [0, 8]]`
+[ ] `[[1, 4], [3, 8]]`
+[ ] `[[2, 2], [3, 6]]`
+[ ] Une erreur
+>>> `*` multiplie **case par case** : 1×1, 2×0, 3×0, 4×2. Le produit matriciel `np.dot(a, b)` vaudrait `[[1, 4], [3, 8]]` ; `a + b` vaudrait `[[2, 2], [3, 6]]`.
+
+## Questions sur le traitement de données avec Pandas
+
+@@ id=b2q06 | theme=pd-filtre | type=single
+Quelle instruction donne les villes situées en Île-de-France ?
+[x] `communes_df[communes_df["Region"] == "Île-de-France"]["Ville"]`
+[ ] `communes_df["Region" == "Île-de-France"]["Ville"]`
+[ ] `communes_df[communes_df["Region"] = "Île-de-France"]["Ville"]`
+[ ] `communes_df.loc["Île-de-France", "Ville"]`
+>>> Le masque doit comparer la **colonne** à la valeur. `"Region" == "Île-de-France"` compare deux chaînes → False → KeyError. `=` est une affectation (erreur de syntaxe). `loc["Île-de-France"]` cherche une étiquette d'index qui n'existe pas. Résultat : Paris, Saint-Denis, Noisy-le-Grand.
+
+@@ id=b2q07 | theme=pd-filtre | type=multi
+On veut un DataFrame des villes dont la population a **diminué** entre 2015 et 2021, avec seulement les colonnes Ville, POP_2021 et POP_2015. Quelles instructions conviennent ?
+[x] `communes_df[communes_df["POP_2021"] < communes_df["POP_2015"]][["Ville", "POP_2021", "POP_2015"]]`
+[x] `communes_df.loc[communes_df["POP_2021"] < communes_df["POP_2015"], ["Ville", "POP_2021", "POP_2015"]]`
+[ ] `communes_df[communes_df["POP_2021"] < communes_df["POP_2015"]]["Ville", "POP_2021", "POP_2015"]`
+[x] `communes_df.query("POP_2021 < POP_2015")[["Ville", "POP_2021", "POP_2015"]]`
+[ ] `communes_df[communes_df["POP_2021"] - communes_df["POP_2015"] > 0][["Ville", "POP_2021", "POP_2015"]]`
+>>> Plusieurs colonnes = une **liste** de noms (doubles crochets). La dernière sélectionne les villes en **hausse**. Résultat : Paris et Mulhouse.
+
+@@ id=b2q08 | theme=pd-agg | type=single
+Que vaut `communes_df.groupby("Region")["POP_2021"].sum()["Grand Est"]` ?
+[x] 397048
+[ ] 291313
+[ ] 2
+[ ] Une erreur
+>>> Grand Est : Strasbourg (291 313) + Mulhouse (105 735) = 397 048. Le résultat du groupby est une Series indexée par les régions.
+
+@@ id=b2q09 | theme=pd-ops | type=multi
+On veut ajouter à `communes_df` une colonne `Evol_%` donnant l'évolution en % entre 2015 et 2021. Quelles instructions conviennent ?
+[x] `communes_df["Evol_%"] = (communes_df["POP_2021"] - communes_df["POP_2015"]) / communes_df["POP_2015"] * 100`
+[x] `communes_df["Evol_%"] = (communes_df["POP_2021"] / communes_df["POP_2015"] - 1) * 100`
+[x] `communes_df["Evol_%"] = communes_df.apply(lambda x: (x["POP_2021"] - x["POP_2015"]) / x["POP_2015"] * 100, axis=1)`
+[ ] `communes_df["Evol_%"] = communes_df.apply(lambda x: (x["POP_2021"] - x["POP_2015"]) / x["POP_2015"] * 100, axis=0)`
+[ ] `communes_df.assign(Evol=(communes_df["POP_2021"] - communes_df["POP_2015"]) / communes_df["POP_2015"] * 100)`
+>>> Les deux premières sont vectorisées (et mathématiquement identiques). Avec apply, il faut `axis=1` pour recevoir chaque **ligne**. `assign` renvoie un nouveau DataFrame qui n'est pas récupéré ici.
+
+@@ id=b2q10 | theme=pd-manip | type=single
+Que vaut `communes_df.sort_values(by="SUPERF", ascending=False).iloc[0]["Ville"]` ?
+[x] "Marseille"
+[ ] "Paris"
+[ ] "Saint-Denis"
+[ ] "Noisy-le-Grand"
+>>> Tri décroissant de la superficie : Marseille (240,6 km²) en premier. Les NaN (Saint-Denis) sont placés **à la fin** par défaut.
+
+@@ id=b2q11 | theme=pd-nan | type=multi
+Quelles affirmations sont correctes (chacune sur le DataFrame d'origine) ?
+[x] `communes_df["SUPERF"].isna().sum()` vaut 1
+[x] `communes_df.dropna()` renvoie un DataFrame de 12 lignes
+[x] `communes_df.dropna(axis=1)` renvoie un DataFrame sans la colonne SUPERF
+[ ] `communes_df.dropna(inplace=True)` renvoie un DataFrame de 12 lignes
+[x] `communes_df.shape` vaut `(13, 6)`
+[ ] `communes_df.count()` vaut 13 pour toutes les colonnes
+>>> Avec `inplace=True`, la méthode renvoie `None`. `count()` compte les valeurs non manquantes : 12 pour SUPERF.
+
+@@ id=b2q12 | theme=pd-acces | type=single
+Après `communes_df = communes_df.set_index("Ville")`, quelle instruction donne la population 2021 de Lyon ?
+[x] `communes_df.loc["Lyon", "POP_2021"]`
+[ ] `communes_df.iloc["Lyon", "POP_2021"]`
+[ ] `communes_df.loc[2, "POP_2021"]`
+[ ] `communes_df["Lyon"]["POP_2021"]`
+>>> L'index est maintenant le nom des villes : on utilise `loc` avec l'étiquette "Lyon". L'étiquette 2 n'existe plus (KeyError) ; `communes_df["Lyon"]` cherche une **colonne** Lyon.
+
+#### QCM id=blanc3 | title=QCM blanc n°3 — Notes | duree=20 | dataset=notes | desc=Notes d'une promotion : moyennes, groupby, homogénéisation.
+5 questions de Python de base, puis 7 questions pandas sur le DataFrame `notes_df` (index automatique 0, 1, 2…).
+
+## Questions sur les notions de bases de python
+
+@@ id=b3q01 | theme=listes | type=single
+Qu'affiche ce code ?
+```python
+x = [3, 1, 2]
+y = x
+y.append(4)
+print(len(x))
+```
+[ ] 3
+[x] 4
+[ ] Une erreur
+[ ] None
+>>> `y = x` ne copie pas la liste : x et y désignent le même objet, donc x a aussi 4 éléments. Avec `y = x.copy()`, on aurait 3.
+
+@@ id=b3q02 | theme=structures | type=multi
+Soit `t = (10, 20, 30)` et `ll = [[1, 2, 3], [4, 5, 6]]`. Quelles affirmations sont correctes ?
+[x] `t[1]` vaut 20
+[ ] `t[1] = 25` remplace 20 par 25
+[x] `ll[1][2]` vaut 6
+[x] `ll[0]` vaut `[1, 2, 3]`
+[ ] `len(ll)` vaut 6
+[x] `for a, b, c in ll: print(b)` affiche 2 puis 5
+>>> Un tuple n'est pas modifiable (TypeError). `ll` contient **2** sous-listes. Le déballage `a, b, c` donne à b le 2e élément de chaque sous-liste.
+
+@@ id=b3q03 | theme=bases | type=multi
+Avec `val = 3.14159` et `n = 7`, quelles affirmations sont correctes ?
+[x] `f"{val:.2f}"` vaut `"3.14"`
+[x] `f"{n:03d}"` vaut `"007"`
+[x] `format(n, 'b')` vaut `"111"`
+[ ] `print("a", "b", "c")` affiche `abc`
+[ ] `f"{val:.3f}"` vaut `"3.141"`
+>>> `.3f` **arrondit** : 3.14159 → "3.142". `print` sépare ses arguments par des espaces : `a b c`.
+
+@@ id=b3q04 | theme=fonctions | type=multi
+Soit la fonction suivante. Quelles affirmations sont correctes ?
+```python
+def bilan(notes, coef=1):
+    moyenne = sum(notes) / len(notes)
+    if moyenne >= 10:
+        return moyenne * coef, "admis"
+    return moyenne * coef, "ajourné"
+```
+[x] `bilan([12, 8, 13])` renvoie `(11.0, 'admis')`
+[x] `bilan([8, 9], coef=2)` renvoie `(17.0, 'ajourné')`
+[x] Après `m, r = bilan([10])`, `r` vaut `'admis'`
+[ ] `bilan(coef=2, notes=[20])` provoque une erreur car l'ordre des arguments n'est pas respecté
+[ ] Quand la moyenne est ≥ 10, la ligne `return moyenne * coef, "ajourné"` est aussi exécutée
+>>> Avec des arguments **nommés**, l'ordre est libre. `return` termine immédiatement la fonction : la suite n'est pas exécutée. (8 + 9) / 2 × 2 = 17.0.
+
+@@ id=b3q05 | theme=regex | type=single
+Que renvoie `re.findall(r"\d+", "Contact : jean.dupont@esiee.fr, tel 01 45 92 65 00")` ?
+[x] `['01', '45', '92', '65', '00']`
+[ ] `['0145926500']`
+[ ] `[1, 45, 92, 65, 0]`
+[ ] `'01'`
+>>> Chaque bloc de chiffres consécutifs est une correspondance (les espaces les séparent). `findall` renvoie toujours des **chaînes**.
+
+## Questions sur le traitement de données avec Pandas
+
+@@ id=b3q06 | theme=pd-nan | type=single
+Que vaut `notes_df["Note_Exam"].mean()` ?
+[x] Environ 11.22 : la valeur manquante est ignorée
+[ ] 10.1 : la valeur manquante compte pour 0
+[ ] NaN
+[ ] Une erreur
+>>> Somme des 9 notes présentes = 101, divisée par **9** (pas 10) : 11,22. pandas ignore les NaN par défaut.
+
+@@ id=b3q07 | theme=pd-filtre | type=multi
+Quelles instructions donnent les étudiants du groupe 1 ayant une note de TD ≥ 10 ?
+[x] `notes_df[(notes_df["Groupe"] == 1) & (notes_df["Note_TD"] >= 10)]`
+[ ] `notes_df[notes_df["Groupe"] == 1 & notes_df["Note_TD"] >= 10]`
+[x] `notes_df.query("Groupe == 1 and Note_TD >= 10")`
+[ ] `notes_df[(notes_df["Groupe"] == 1) and (notes_df["Note_TD"] >= 10)]`
+[x] `notes_df.loc[(notes_df["Groupe"] == 1) & (notes_df["Note_TD"] >= 10), :]`
+>>> Sans parenthèses, `1 & notes_df["Note_TD"]` est évalué en premier → TypeError. `and` entre deux Series → ValueError. Résultat : Martin, Petit, Simon.
+
+@@ id=b3q08 | theme=pd-agg | type=single
+Que vaut `notes_df.groupby("Groupe")["Note_TD"].mean()[1]` ?
+[x] 14.25
+[ ] 10.5
+[ ] 11.5
+[ ] Une erreur : l'index 1 n'existe pas
+>>> Le résultat est indexé par les **numéros de groupe** 1, 2, 3 : `[1]` est l'étiquette du groupe 1 → (14,5 + 16 + 18 + 8,5) / 4 = 14,25. (Les groupes 2 et 3 valent 10,5.)
+
+@@ id=b3q09 | theme=pd-nan | type=multi
+La colonne `Option` contient « Réseaux » et « réseaux ». Quelles affirmations sont correctes ?
+[x] `notes_df["Option"].unique()` contient 4 valeurs différentes
+[x] `notes_df["Option"] = notes_df["Option"].str.capitalize()` homogénéise la colonne
+[ ] `notes_df["Option"].str.capitalize()` seul suffit à modifier la colonne
+[ ] `notes_df["Option"] = notes_df["Option"].map({"réseaux": "Réseaux"})` corrige la colonne sans rien abîmer
+[x] `notes_df["Option"].value_counts()["Data"]` vaut 5
+[x] Après homogénéisation, `notes_df["Option"].nunique()` vaut 3
+>>> Valeurs : Data, Réseaux, réseaux, Embarqué. Avec `map(dict)`, toutes les valeurs absentes du dictionnaire (Data, Réseaux, Embarqué) deviennent **NaN** !
+
+@@ id=b3q10 | theme=pd-ops | type=single
+On veut une colonne `Moyenne` = 40 % de la note de TD + 60 % de la note d'examen. Quelle instruction ?
+[x] `notes_df["Moyenne"] = 0.4 * notes_df["Note_TD"] + 0.6 * notes_df["Note_Exam"]`
+[ ] `notes_df["Moyenne"] = notes_df.apply(lambda x: 0.4 * x["Note_TD"] + 0.6 * x["Note_Exam"], axis=0)`
+[ ] `notes_df.insert("Moyenne", 0.4 * notes_df["Note_TD"] + 0.6 * notes_df["Note_Exam"])`
+[ ] `notes_df["Moyenne"] = notes_df[["Note_TD", "Note_Exam"]].mean(axis=1)`
+>>> Calcul vectorisé ligne à ligne. Avec apply il faudrait `axis=1` ; `insert` exige une position en 1er argument ; `mean(axis=1)` ferait une moyenne 50/50. (Lucas Durand, absent à l'examen, aura NaN.)
+
+@@ id=b3q11 | theme=pd-acces | type=multi
+Quelles affirmations sur l'itération sont correctes ?
+[x] `for c in notes_df: print(c)` affiche les noms des colonnes
+[x] `for ligne in notes_df.itertuples(): print(ligne[1])` affiche les noms de famille
+[ ] `for ligne in notes_df.itertuples(): print(ligne[0])` affiche les noms de famille
+[x] `for i in notes_df.index: print(notes_df.loc[i, "Prenom"])` affiche les prénoms
+[ ] `for i in range(len(notes_df)): print(notes_df.iloc[i, "Nom"])` affiche les noms
+>>> Dans `itertuples()`, la position 0 est l'**index**, la position 1 la première colonne (Nom). `iloc` n'accepte pas de nom de colonne.
+
+@@ id=b3q12 | theme=pd-manip | type=single
+Que vaut `notes_df.drop(columns=["Absences", "Option"]).shape` ?
+[x] `(10, 5)`
+[ ] `(10, 7)`
+[ ] `(8, 7)`
+[ ] `(10, 6)`
+>>> 10 lignes, 7 − 2 = 5 colonnes. (notes_df lui-même n'est pas modifié sans affectation ni inplace.)
+
+#### QCM id=blanc4 | title=QCM blanc n°4 — Ventes | duree=20 | dataset=ventes | desc=Ventes d'une enseigne : regex, CSV, erreurs, puis groupby, dates et merge.
+5 questions de Python (regex, CSV, erreurs, listes), puis 7 questions pandas sur le DataFrame `ventes_df` (index automatique 0, 1, 2…).
+
+## Questions sur les notions de bases de python
+
+@@ id=b4q01 | theme=erreurs | type=single
+Quelle exception provoque `int("12a")` ?
+[ ] TypeError
+[x] ValueError
+[ ] NameError
+[ ] KeyError
+>>> Le type (str) est accepté par `int`, mais la **valeur** "12a" ne représente pas un entier → ValueError.
+
+@@ id=b4q02 | theme=regex | type=multi
+Quelles affirmations sont correctes ?
+[x] `re.match(r"\d{5}", "Code 93160")` renvoie `None`
+[x] `re.search(r"\d{5}", "Code 93160").group()` vaut `"93160"`
+[ ] `re.findall(r"\d+", "3 pommes et 12 poires")` vaut `[3, 12]`
+[x] `re.findall(r"[A-Z]\w+", "Paris et Lyon sont des villes")` vaut `['Paris', 'Lyon']`
+[ ] Dans un motif, `^` signifie « finit par »
+>>> `match` ne regarde que le **début** de la chaîne (« C » n'est pas un chiffre). `findall` renvoie des chaînes : `['3', '12']`. `^` = commence par, `$` = finit par.
+
+@@ id=b4q03 | theme=csv | type=multi
+Quelles affirmations sur le module `csv` sont correctes ?
+[x] `csv.DictReader` renvoie chaque ligne sous forme de dictionnaire
+[ ] Les valeurs numériques lues avec `csv.reader` sont automatiquement des float
+[x] `writeheader()` écrit la ligne d'en-tête
+[x] Pour un fichier français, le délimiteur est souvent `;`
+[ ] Il est inutile de fermer un fichier ouvert avec `open()`
+>>> Avec le module csv, tout est lu en **texte** (il faut convertir). On ferme le fichier avec `close()`.
+
+@@ id=b4q04 | theme=listes | type=multi
+Soit `l = [5, 3, 8, 3]`. Chaque instruction est appliquée à cette liste d'origine. Quelles affirmations sont correctes ?
+[x] Après `l.remove(3)`, `l` vaut `[5, 8, 3]`
+[ ] `l.sort()` renvoie `[3, 3, 5, 8]`
+[x] `sorted(l)` renvoie `[3, 3, 5, 8]` et ne modifie pas `l`
+[x] `list(set(l))` contient 3 éléments
+[x] `l.index(8)` vaut 2
+[ ] `l.pop(1)` renvoie 5
+>>> `remove` supprime la **première** occurrence. `sort()` renvoie `None`. `pop(1)` renvoie l'élément d'indice 1 : 3.
+
+@@ id=b4q05 | theme=erreurs | type=single
+Qu'affiche ce code, et que vaut `x` ?
+```python
+def division(a, b):
+    try:
+        r = a / b
+    except ZeroDivisionError:
+        print("Division par zéro")
+        r = None
+    else:
+        print("OK")
+    finally:
+        print("Fin")
+    return r
+
+x = division(6, 0)
+```
+[x] « Division par zéro » puis « Fin », et `x` vaut `None`
+[ ] « Division par zéro » puis « OK » puis « Fin », et `x` vaut `None`
+[ ] « OK » puis « Fin », et `x` vaut 0
+[ ] Le programme s'arrête sur une ZeroDivisionError
+>>> L'erreur est attrapée par `except` ; `else` est sauté (il y a eu une erreur) ; `finally` s'exécute toujours.
+
+## Questions sur le traitement de données avec Pandas
+
+@@ id=b4q06 | theme=pd-ops | type=single
+Quelle instruction ajoute une colonne `CA` (chiffre d'affaires) = Quantite × Prix_unitaire ?
+[x] `ventes_df["CA"] = ventes_df["Quantite"] * ventes_df["Prix_unitaire"]`
+[ ] `ventes_df["CA"] = ventes_df["Quantite" * "Prix_unitaire"]`
+[ ] `ventes_df.assign(CA=ventes_df["Quantite"] * ventes_df["Prix_unitaire"])`
+[ ] `ventes_df["CA"] = ventes_df.apply(lambda x: x["Quantite"] * x["Prix_unitaire"])`
+>>> Multiplication ligne à ligne de deux colonnes. `"Quantite" * "Prix_unitaire"` → TypeError ; `assign` seul n'est pas récupéré ; l'apply sans `axis=1` reçoit des colonnes → KeyError.
+
+@@ id=b4q07 | theme=pd-agg | type=multi
+La colonne `CA` ayant été créée, quelles instructions donnent le CA total **par magasin** ?
+[x] `ventes_df.groupby("Magasin")["CA"].sum()`
+[x] `ventes_df.groupby("Magasin").aggregate({"CA": "sum"})`
+[ ] `ventes_df["CA"].groupby("Magasin").sum()`
+[ ] `ventes_df.groupby("CA")["Magasin"].sum()`
+[ ] `ventes_df[ventes_df["Magasin"] == "Paris"]["CA"].sum()`
+>>> On groupe par Magasin puis on somme CA (Paris 612,5 ; Lille 280 ; Lyon 250, la vente sans quantité étant ignorée). La 3e : une Series n'a pas de colonne « Magasin » (KeyError). La dernière ne donne que Paris, pas chaque magasin.
+
+@@ id=b4q08 | theme=pd-nan | type=single
+Que vaut `ventes_df["Vendeur"].nunique()` ?
+[ ] 3
+[x] 4
+[ ] 10
+[ ] `['Alice', 'Bruno', 'alice', 'Chloé']`
+>>> « Alice » et « alice » sont deux valeurs différentes tant que la colonne n'est pas homogénéisée : Alice, Bruno, alice, Chloé → 4. (`unique()` donnerait la liste.)
+
+@@ id=b4q09 | theme=pd-manip | type=multi
+À propos de la colonne `Date`, quelles affirmations sont correctes ?
+[x] Après `read_csv`, `ventes_df["Date"].dtype` est `object`
+[x] `pd.to_datetime(ventes_df["Date"], format="%Y-%m-%d")` la convertit en `datetime64[ns]`
+[ ] `pd.to_datetime(ventes_df["Date"], format="%d/%m/%Y")` la convertit correctement
+[x] `ventes_df.sort_values(by="Date", ascending=False).iloc[0]["Produit"]` vaut "Souris"
+>>> Sans conversion, les dates sont du texte (object). Le format doit correspondre exactement au texte « 2026-01-05 » (année-mois-jour), sinon ValueError. La vente la plus récente (10/01) est une souris.
+
+@@ id=b4q10 | theme=pd-concat | type=single
+`vendeurs_df = pd.DataFrame({"Nom": ["Alice", "Bruno", "Chloé"], "Anciennete": [5, 2, 8]})`. Quelle instruction ajoute l'ancienneté du vendeur à chaque vente ?
+[x] `pd.merge(ventes_df, vendeurs_df, left_on="Vendeur", right_on="Nom")`
+[ ] `pd.merge(ventes_df, vendeurs_df, on="Vendeur")`
+[ ] `pd.concat([ventes_df, vendeurs_df])`
+[ ] `ventes_df.join(vendeurs_df)`
+>>> Les colonnes n'ont pas le même nom → `left_on` / `right_on` (`on="Vendeur"` → KeyError). Remarque : en `inner`, la vente de « alice » (minuscule) disparaît : 9 lignes au lieu de 10.
+
+@@ id=b4q11 | theme=pd-nan | type=multi
+Quelles affirmations sur la colonne `Quantite` sont correctes ?
+[x] `ventes_df["Quantite"].isna().sum()` vaut 1
+[x] Son dtype est `float64`
+[x] `ventes_df["Quantite"] = ventes_df["Quantite"].fillna(0)` remplace la quantité manquante par 0
+[x] `ventes_df.dropna(subset=["Quantite"])` renvoie 9 lignes
+[ ] `ventes_df["Quantite"].astype(int)` fonctionne directement
+[ ] `ventes_df["Quantite"].sum()` vaut NaN
+>>> Un NaN rend la colonne float64 et empêche `astype(int)`. `sum()` ignore le NaN : 40.
+
+@@ id=b4q12 | theme=pd-acces | type=single
+Combien de valeurs renvoie `ventes_df.loc[2:4, "Produit"]` ?
+[ ] 2
+[x] 3
+[ ] 4
+[ ] Une erreur
+>>> `loc` inclut la borne de fin : étiquettes 2, 3 et 4 (Écran, Clavier, Écran). `ventes_df.iloc[2:4, 2]` en renverrait 2.

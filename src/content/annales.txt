@@ -1,0 +1,196 @@
+#### QCM id=annale2025 | title=Annale — Examen du 18/11/2025 | duree=20 | dataset=films
+Le **vrai sujet** de l'an dernier, reproduit tel quel (y compris ses coquilles), avec une correction détaillée. Réponds à tout, puis clique sur « Terminer et corriger ».
+
+> [!warn] À propos du fichier de données
+> Le fichier de films distribué le jour de l'examen n'est pas fourni. Le tableau affiché plus bas est une **reconstitution cohérente avec l'énoncé** (Pulp Fiction dure 154 min, Interstellar est à l'index 11, données « sales »). Seule la proposition D de la question 10 dépend vraiment de son contenu.
+
+## Questions sur les notions de bases de python
+
+@@ id=an01 | theme=structures | type=single
+Quel est le type de la variable suivante : `ma_var=("Pommes",10,"Bananes",3,"Dattes",5,"Figue",8)`
+[ ] Dictionnaire
+[x] Tuple
+[ ] Liste de liste
+[ ] Liste
+>>> Des **parenthèses** et des virgules : c'est un **tuple** (8 éléments). Le piège : les couples « fruit, quantité » font penser à un dictionnaire, qui s'écrirait `{"Pommes": 10, "Bananes": 3, …}`. Une liste utiliserait des crochets.
+
+@@ id=an02 | theme=listes | type=multi
+Soit la variable suivante : `ma_var=["Voiture","Avion","Moto","Bus","Train","Trottinette"]`. Parmi les affirmations données, quelles sont les affirmations correctes ?
+[x] On peut afficher le mot "Train" soit en écrivant `print(ma_var[4])` soit en écrivant `print(ma_var[-2])`
+[ ] L'instruction `val_effacee=ma_var.pop(3)` met le mot "Moto" dans la variable `val_effacee`
+[x] L'instruction `print(ma_var[:3])` affiche les mots "Voiture","Avion","Moto"
+[x] L'instruction `val_effacee=ma_var.pop()` supprime le mot "Trottinette" de la liste
+[ ] L'instruction `ma_var.append("Poussette")` rajoute le mot "Poussette" en début de liste
+[ ] L'instruction `print(sorted(ma_var,reverse=True))` affiche les mots dans l'ordre suivant : "Avion","Bus","Moto","Train","Trottinette","Voiture"
+>>> Indices : Voiture **0**, Avion **1**, Moto **2**, Bus **3**, Train **4** (= −2), Trottinette **5** (= −1).
+>>> - `pop(3)` retire et renvoie **"Bus"**, pas "Moto".
+>>> - `[:3]` → indices 0, 1, 2 : Voiture, Avion, Moto. ✔
+>>> - `pop()` sans argument retire le **dernier** élément : Trottinette. ✔
+>>> - `append` ajoute **à la fin** (au début : `insert(0, "Poussette")`).
+>>> - `reverse=True` donne l'ordre alphabétique **décroissant** : Voiture, Trottinette, Train, Moto, Bus, Avion. L'ordre proposé est l'ordre croissant.
+
+@@ id=an03 | theme=controle | type=multi
+On considère le code suivant :
+```python
+notes = [
+    [12, 14, 15],
+    [8, 9, 11],
+    [10, 10, 9],
+    [-1, 15, 16],,
+    [7, 8, 12),
+    [11, 12, 8],
+]
+
+for note1, note2, note3 in notes:
+    if note1 < 0 or note2 < 0 or note3 < 0:
+        modalité= "modalité invalide"
+        note_finale=0
+        continue
+    moyenne = (note1 + note2 + note3) / 3
+    if moyenne >= 10:
+        note_finale = moyenne
+        modalite = "modalité 1"
+    elif moyenne < 10 and note1 < 10 and note2 < 10 and note3 > 10:
+        note_finale = (note1 + note2 + 2 * note3) / 4
+        modalite = "Modalité 2"
+    else:
+        note_finale = (note1 + note2 + note3) / 2.5
+        modalite = "modalité 3"
+    print(f"Notes: {note1}, {note2}, {note3}")
+    print(f"Note finale: {note_finale:.2f} (calculée avec {modalite})")
+```
+Quelles sont les affirmations correctes parmi celles proposées ?
+[x] La boucle itère sur chaque sous-liste de la variable "note"
+[x] On peut remplacer la boucle for par une boucle while mais en itérant sur le numéro de la ligne de la variable "notes" et en écrivant : note1, note2,note3=notes[i]
+[x] Si dans le code on remplace le continue par un break, le code n'affiche la note finale que pour les trois premières lignes de la variable "notes"
+[ ] Lorsque la boucle arrive à la ligne de la variable "note" avec les valeurs [-1,15,16], le code affiche une note finale à "0" et une modalité invalide
+[x] La modalité 3 est appliquée pour la troisième ligne avec les valeur [10,10,9] de la variable "note"
+[ ] L'affichage de la note finale ne fait apparaître que la partie entière de la note
+[ ] Si la moyenne est inférieure à 10, le code va automatiquement à la condition else
+[x] les variables "note1", "note2" et "note3" prennent les valeurs dans l'ordre de chacune des sous listes de la variable "note"
+>>> **Coquilles du sujet** : lignes 5 et 6 (`,,` et `[7, 8, 12)`), le code tel quel provoque une **SyntaxError**. Les propositions se lisent sur le code corrigé, et « note » désigne la liste `notes`. (Autre détail : `modalité` avec accent, ligne 12, est une variable *différente* de `modalite`.)
+>>>
+>>> Trace du code corrigé :
+>>>
+>>> | Ligne | Moyenne | Branche | Note finale |
+>>> |---|---|---|---|
+>>> | [12, 14, 15] | 13,67 | modalité 1 | 13.67 |
+>>> | [8, 9, 11] | 9,33 | modalité 2 (8 < 10, 9 < 10, 11 > 10) | 9.75 |
+>>> | [10, 10, 9] | 9,67 | **modalité 3** (10 n'est pas < 10) | 11.60 |
+>>> | [-1, 15, 16] | — | `continue` : **rien n'est affiché** | — |
+>>> | [7, 8, 12] | 9 | modalité 2 | 9.75 |
+>>> | [11, 12, 8] | 10,33 | modalité 1 | 10.33 |
+>>>
+>>> - Proposition D fausse : le `continue` saute les deux `print`, donc **rien** n'est affiché pour [-1, 15, 16].
+>>> - Avec `break` : les 3 premières lignes sont affichées, puis la boucle s'arrête à [-1, 15, 16]. ✔
+>>> - Version while : `i = 0`, `while i < len(notes):`, `note1, note2, note3 = notes[i]`, sans oublier d'incrémenter `i` (y compris avant le `continue`, sinon boucle infinie). ✔
+>>> - `:.2f` affiche **2 décimales**, pas la partie entière.
+>>> - Une moyenne < 10 passe d'abord par le test du `elif` (modalité 2) avant d'arriver au `else`.
+
+@@ id=an04 | theme=comprehension | type=multi
+List comprehension : quelles sont les affirmations correctes parmi celles proposées ?
+[x] Le résultat de l'instruction `ma_liste=[x.lower()for x in "Hello"]` est `ma_liste=["h","e","l","l","o"]`
+[x] Le résultat de l'instruction `a_liste=[x+2 if x<8 else x+5 if x<14 else x for x in [5,12,4,15,8]]` est `ma_liste=[7,17,6,15,13]`
+[ ] Le résultat de l'instruction `ma_liste=[x for x in range(9)if x % 2]` est `ma_liste=[1, 3, 5, 7, 9]`
+[x] Le résultat de l'instruction `ma_liste=[x**2 for x in range(5)]` est `ma_liste=[0,1,4,9,16]`
+>>> - Itérer sur "Hello" donne ses lettres, mises en minuscules. ✔
+>>> - 5 → 7 ; 12 → 17 ; 4 → 6 ; 15 → 15 ; 8 → 13 (8 n'est pas < 8 mais < 14). Les **valeurs** sont justes ; le nom `a_liste` / `ma_liste` est une coquille du sujet. ✔
+>>> - `range(9)` s'arrête à **8** : on obtient `[1, 3, 5, 7]`, sans 9.
+>>> - Carrés de 0 à 4. ✔
+
+## Questions sur le traitement de données avec Pandas
+
+@@ id=an05 | theme=pd-filtre | type=single
+Pour ces questions, on travaille sur un fichier de données (le DataFrame s'appelle `film_df`, l'indexage se fait automatiquement à la lecture du fichier csv). Quelle instruction permet d'accéder aux genres des films sortis en 1994 et 1999 ?
+[x] `film_df[(film_df["Annee_sortie"]==1999)| (film_df["Annee_sortie"]==1994)]["Genre"]`
+[ ] `film_df[(film_df["Annee_sortie"]==1999)& (film_df["Annee_sortie"]==1994)]["Genre"]`
+[ ] `film_df[film_df["Annee_sortie"]==1999]["Genre"]+ film_df[film_df["Annee_sortie"]==1994]["Genre"]`
+[ ] `film_df[(film_df["Annee_sortie"]==1999)| (film_df["Annee_sortie"]==1994)]["Genre"].count()`
+>>> « Sortis en 1994 et 1999 » = l'ensemble des films de 1994 **plus** ceux de 1999 → une ligne est retenue si son année vaut 1994 **OU** 1999 → `|`.
+>>> - Avec `&`, aucune ligne ne peut avoir deux années à la fois : résultat **vide**.
+>>> - Le `+` additionne deux Series en les alignant sur leurs index (différents) → que des **NaN**.
+>>> - `.count()` renvoie un **nombre**, pas les genres.
+
+@@ id=an06 | theme=pd-base | type=multi
+On souhaite avoir les informations suivantes sur le dataframe : nature des données, le nombre de lignes, le nombre d'éléments par colonnes et nombre d'éléments non nuls. Quelles commandes peut-on utiliser ?
+[ ] `print(film_df.size)`
+[ ] `print(film_df.columns)`
+[x] `print(film_df.dtypes)`
+[ ] `print(film_df.isna())`
+[x] `print(film_df.shape)`
+[x] `print(film_df.info())`
+>>> - `dtypes` → la **nature** (type) des données de chaque colonne. ✔
+>>> - `shape` → (nombre de **lignes**, nombre de colonnes). ✔
+>>> - `info()` → nombre de lignes, et pour chaque colonne le **Non-Null Count** et le Dtype : il répond à tout. ✔ (`print(...)` affiche en plus `None`, sans conséquence.)
+>>> - `size` → nombre **total** d'éléments (lignes × colonnes), pas par colonne.
+>>> - `columns` → seulement les noms des colonnes.
+>>> - `isna()` → un tableau de True/False, pas des comptes (il faudrait `isna().sum()`).
+
+@@ id=an07 | theme=pd-nan | type=multi
+On souhaite faire un datacleansing sur le dataframe, en ne retirant que les lignes pour lesquelles le titre et le nom du réalisateur manque, en prenant les valeurs moyennes pour les budgets et les durées quand les données sont manquantes et en homogénéisant les catégories. On souhaite aussi trier le dataframe par ordre décroissant de budget, et mettre les colonnes dans l'ordre : Titre, Realisateur, Genre, Annee_sortie, Duree_mn, Budget_M. Parmi les instructions ci-dessous, quelles instructions correspondent à ce que l'on veut faire ?
+[ ] `film_df = film_df.dropna(how="any")`
+[ ] `film_df["Budget_M"] = film_df["Budget_M"].fillna(film_df["Budget_M"].mode())`
+[ ] `film_df.sort_index(axis=1,ascending=False,inplace=True)`
+[x] `film_df=film_df[["Titre","Realisateur","Genre","Annee_sortie","Duree_mn","Budget_M"]]`
+[ ] `print(film_df.unique())`
+[x] `film_df["Realisateur"]=film_df["Realisateur"].apply (lambda x : x.lower())`
+>>> Ce qu'il aurait fallu écrire pour chaque étape :
+>>> ```python
+>>> film_df = film_df.dropna(subset=["Titre", "Realisateur"], how="all")
+>>> film_df["Budget_M"] = film_df["Budget_M"].fillna(film_df["Budget_M"].mean())
+>>> film_df["Duree_mn"] = film_df["Duree_mn"].fillna(film_df["Duree_mn"].mean())
+>>> film_df.sort_values(by="Budget_M", ascending=False, inplace=True)
+>>> film_df = film_df[["Titre", "Realisateur", "Genre", "Annee_sortie", "Duree_mn", "Budget_M"]]
+>>> ```
+>>> - `dropna(how="any")` supprime toute ligne ayant **au moins un** NaN (budget, durée…) : trop large.
+>>> - `mode()` n'est pas la **moyenne** ; en plus il renvoie une Series, que `fillna` aligne sur l'index (résultat absurde).
+>>> - `sort_index(axis=1, …)` trie les **noms de colonnes** à l'envers, pas selon le budget.
+>>> - Sélection d'une liste de colonnes → bon ordre. ✔
+>>> - `unique()` n'existe pas pour un DataFrame → AttributeError.
+>>> - Mettre les réalisateurs en minuscules **homogénéise** les catégories. ✔ (Sur une valeur NaN restante, `x.lower()` planterait : `.str.lower()` est plus sûr.)
+
+@@ id=an08 | theme=pd-ops | type=single
+Que font les instructions :
+```python
+def ma_fonction(x):
+    H = round(x /60)
+    M = round(x % 60)
+    return f"{H}h{M:02d}"
+
+film_df["Nouvelle_col"] = film_df["Duree_mn"].apply(ma_fonction)
+```
+[ ] Il ajoute deux colonnes : "H" et "M"
+[x] Il crée une nouvelle colonne qui contient la durée en heures et minutes sous forme de chaîne de caractères.
+[ ] Il remplace la colonne "Duree_mn" par une nouvelle colonne contenant la durée en heures.
+[ ] Il génère une erreur car apply ne peut pas être utilisé avec une fonction personnalisée.
+>>> `apply` envoie chaque durée à `ma_fonction`, qui renvoie une **f-string** du type "2h19" ; le résultat est stocké dans la **nouvelle** colonne `Nouvelle_col` (Duree_mn est conservée). H et M sont de simples variables locales.
+>>>
+>>> Pour aller plus loin : `round(x/60)` est une maladresse. Pour Pulp Fiction (154 min), `round(2.57)` = **3** → "3h34" au lieu de "2h34". Il faudrait `x // 60`. Et une durée NaN ferait planter `round`.
+
+@@ id=an09 | theme=pd-filtre | type=single
+On souhaite avoir la Duree moyenne des films de type Thriller. Quelle instruction doit-on écrire ?
+[ ] `val_moy=film_df.groupby("Genre")["Duree_mn"].mean()`
+[ ] `val_moy=film_df["Thriller"].mean()`
+[ ] `val_moy=film_df[film_df["Genre"]=="Thriller"].mean()`
+[x] `val_moy=film_df[film_df["Genre"]=="Thriller"]["Duree_mn"].mean()`
+>>> Filtrer les lignes (Genre == "Thriller"), choisir la colonne Duree_mn, puis moyenner.
+>>> - `groupby` donne la moyenne de **chaque** genre (une Series), pas une seule valeur.
+>>> - `film_df["Thriller"]` cherche une **colonne** Thriller → KeyError.
+>>> - Sans choisir de colonne, `mean()` porte sur toutes les colonnes, dont du texte → erreur en pandas 2.
+>>>
+>>> Avec le fichier reconstitué : (139 + 154 + 132) / 3 ≈ 141,7. Se7en, noté « thriller » en minuscules, est oublié : d'où l'importance d'homogénéiser !
+
+@@ id=an10 | theme=pd-acces | type=multi
+Parmi les affirmations données, lesquelles sont correctes ?
+[ ] L'instruction `print(film_df.loc[11:'Annee_sortie':'Budget_M'])` affiche la date de sortie, le nom du réalisateur et le budget du film Interstellar
+[ ] L'intruction `print(film_df.iloc[4,'Duree_mn'])` donne "154"
+[x] L'instruction `print(film_df.columns)` donne le nom des colonnes du dataframe
+[x] L'intruction `print(film_df.iloc[2,3])` donne "christopher nolan"
+[ ] l'instruction `print(film_df.tail(4))` affiche 4 lignes du dataframe prises aléatoirement
+[ ] L'intruction `print(film_df.loc[2,:])` imprime le contenu de la troisième colonne
+>>> - `loc[11:'Annee_sortie':'Budget_M']` : deux-points au lieu de la **virgule** → c'est une tranche de lignes invalide → erreur. La bonne écriture `film_df.loc[11, 'Annee_sortie':'Budget_M']` afficherait bien année, réalisateur et budget (colonnes contiguës, fin incluse).
+>>> - `iloc` n'accepte **que des positions** : `'Duree_mn'` → erreur. Il faudrait `film_df.loc[4, 'Duree_mn']` ou `film_df.iloc[4, 5]`.
+>>> - `columns` donne bien les noms des colonnes. ✔
+>>> - `iloc[2, 3]` = 3e ligne, 4e colonne (Realisateur) : dans les données (reconstituées) c'est « christopher nolan » en minuscules — à vérifier sur le vrai fichier le jour J. ✔
+>>> - `tail(4)` = les 4 **dernières** lignes ; l'aléatoire, c'est `sample(4)`.
+>>> - `loc[2, :]` = la **ligne** d'étiquette 2, toutes colonnes.

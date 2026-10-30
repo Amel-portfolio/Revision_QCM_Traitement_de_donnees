@@ -1,0 +1,633 @@
+@@ id=pb01 | theme=pd-base | type=single
+Quelle instruction crée correctement un DataFrame vide avec les colonnes Ville et POP_21 ?
+[ ] `df = pd.Dataframe(columns=['Ville', 'POP_21'])`
+[x] `df = pd.DataFrame(columns=['Ville', 'POP_21'])`
+[ ] `df = pd.DataFrame(index=['Ville', 'POP_21'])`
+[ ] `df = pd.DataFrame['Ville', 'POP_21']`
+>>> Le nom exact est **`DataFrame`** (D et F majuscules) : `pd.Dataframe` → AttributeError, même si les diapos l'écrivent ainsi. `index=[...]` définirait des **lignes**, pas des colonnes.
+
+@@ id=pb02 | theme=pd-base | type=multi
+Un DataFrame `df` a 10 lignes et 6 colonnes. Quelles affirmations sont correctes ?
+[x] `df.shape` vaut `(10, 6)`
+[x] `df.size` vaut `60`
+[ ] `df.shape()` renvoie `(10, 6)`
+[x] `len(df)` vaut `10`
+[ ] `df.size` vaut `(10, 6)`
+>>> `shape` (tuple lignes, colonnes) et `size` (nombre d'éléments = 10 × 6) sont des **attributs** : `df.shape()` → TypeError (« 'tuple' object is not callable »).
+
+@@ id=pb03 | theme=pd-base | type=multi
+Que permet d'obtenir `df.info()` ?
+[x] Le nombre de valeurs non nulles de chaque colonne
+[x] Le type (dtype) de chaque colonne
+[x] Le nombre de lignes
+[ ] La moyenne de chaque colonne numérique
+[ ] Les 5 premières lignes
+>>> `info()` : index (nombre d'entrées), colonnes, Non-Null Count, Dtype, mémoire. La moyenne est donnée par `describe()` ou `mean()`, les premières lignes par `head()`.
+
+@@ id=pb04 | theme=pd-base | type=single
+Que fait `df.tail(4)` ?
+[ ] Affiche 4 lignes prises aléatoirement
+[x] Affiche les 4 dernières lignes
+[ ] Affiche les 4 premières lignes
+[ ] Supprime les 4 dernières lignes
+>>> `head(n)` : n premières, `tail(n)` : n dernières, `sample(n)` : n au hasard. Piège de l'annale 2025.
+
+@@ id=pb05 | theme=pd-base | type=single
+Quelle est la différence entre `df.insert(...)` et `df.assign(...)` ?
+[ ] Aucune
+[x] `insert` modifie `df` à une position donnée ; `assign` renvoie un nouveau DataFrame et laisse `df` inchangé
+[ ] `assign` modifie `df` ; `insert` renvoie une copie
+[ ] `insert` ajoute une ligne, `assign` une colonne
+>>> `reserve2 = reserve.assign(Céréales=[...])` : `reserve` n'a pas la nouvelle colonne, `reserve2` si. `insert(position, nom, valeurs)` travaille en place et renvoie `None`.
+
+@@ id=pb06 | theme=pd-base | type=single
+Quelle est la liste des étiquettes de l'index après ce code ?
+```python
+inscrits = pd.DataFrame(columns=['Nom', 'Prénom'])
+inscrits.loc[0] = ['Bonnot', 'Arthur']
+inscrits.loc[2] = ['Alberton', 'Paul']
+```
+[ ] `[0, 1]`
+[x] `[0, 2]`
+[ ] `[1, 2]`
+[ ] Une erreur : il manque la ligne 1
+>>> `.loc[étiquette] = [...]` crée une ligne avec **cette étiquette**. L'index n'a pas besoin d'être continu.
+
+@@ id=pb07 | theme=pd-base | type=single
+Quel type pandas affiche `df.dtypes` pour une colonne contenant des chaînes de caractères (pandas 2) ?
+[ ] str
+[x] object
+[ ] string64
+[ ] char
+>>> Texte → `object`. Entiers → `int64`, réels → `float64`, booléens → `bool`, dates → `datetime64[ns]`.
+
+@@ id=pb08 | theme=pd-base | type=single
+Après `df = pd.read_csv('films.csv')` (sans autre option), quel est l'index de `df` ?
+[x] 0, 1, 2, … jusqu'au nombre de lignes − 1
+[ ] 1, 2, 3, … jusqu'au nombre de lignes
+[ ] La première colonne du fichier
+[ ] Il n'y a pas d'index
+>>> L'index numérique est créé automatiquement à la lecture (« l'indexage se fait automatiquement à la lecture du fichier csv »).
+
+@@ id=pb09 | theme=pd-base | type=single
+Que renvoie `df.values` ?
+[ ] La liste des noms de colonnes
+[x] Les valeurs du DataFrame sous forme de tableau numpy, sans noms de colonnes ni index
+[ ] Le nombre de valeurs non nulles
+[ ] Un dictionnaire colonne → valeurs
+>>> `df.values.tolist()` donne ensuite une liste de listes.
+
+@@ id=pb10 | theme=pd-base | type=multi
+Comment créer un DataFrame de deux villes avec les colonnes Ville et POP ?
+[x] `pd.DataFrame({'Ville': ['Paris', 'Lyon'], 'POP': [2133111, 513275]})`
+[x] `pd.DataFrame([{'Ville': 'Paris', 'POP': 2133111}, {'Ville': 'Lyon', 'POP': 513275}])`
+[x] `pd.DataFrame([['Paris', 2133111], ['Lyon', 513275]], columns=['Ville', 'POP'])`
+[ ] `pd.DataFrame(['Paris', 'Lyon'], ['POP'])`
+>>> Dictionnaire de listes (clé = colonne), liste de dictionnaires (un par ligne), liste de listes + `columns` : les trois marchent. La dernière passe `['POP']` comme **index** de 1 élément pour 2 lignes → erreur.
+
+@@ id=pa01 | theme=pd-acces | type=single
+`df` a un index par défaut (0, 1, 2, …). Combien de lignes renvoie `df.iloc[2:4]` ?
+[x] 2 (positions 2 et 3)
+[ ] 3 (positions 2, 3 et 4)
+[ ] 1
+[ ] 4
+>>> Avec `iloc`, la fin est **exclue**, comme pour les listes.
+
+@@ id=pa02 | theme=pd-acces | type=single
+`df` a un index par défaut (0, 1, 2, …). Combien de lignes renvoie `df.loc[2:4]` ?
+[ ] 2
+[x] 3 (étiquettes 2, 3 et 4)
+[ ] 1
+[ ] Une erreur : loc n'accepte pas de nombres
+>>> Avec `loc`, la fin est **incluse**. Et loc accepte des nombres quand l'index est numérique (ce sont alors des étiquettes).
+
+@@ id=pa03 | theme=pd-acces | type=multi
+`capitales` a pour index `'Pays1'` … `'Pays6'` et pour colonnes `Pays`, `Capitale`. Quelles affirmations sont correctes ?
+[x] `capitales.loc['Pays2':'Pays4']` renvoie 3 lignes
+[x] `capitales.iloc[3, 1]` renvoie la capitale de la 4e ligne
+[x] `capitales.loc['Pays2', 'Capitale']` renvoie une seule valeur
+[ ] `capitales.iloc['Pays2']` renvoie la 2e ligne
+[ ] `capitales.loc[0]` renvoie la première ligne
+>>> `iloc` n'accepte que des positions entières ; `loc` que des étiquettes existantes (0 n'est pas une étiquette ici → KeyError).
+
+@@ id=pa04 | theme=pd-acces | type=multi
+Quelles instructions provoquent une **erreur** sur un DataFrame `df` à index par défaut ayant une colonne `Nom` ?
+[x] `df.iloc[0, 'Nom']`
+[ ] `df.loc[0, 'Nom']`
+[ ] `df.iloc[:, 0]`
+[x] `df['Nom', 'Prenom']` (s'il n'existe pas de colonne nommée ainsi)
+[ ] `df[['Nom']]`
+>>> `iloc` avec un nom → erreur. `df['Nom', 'Prenom']` cherche **une** colonne dont le nom serait le tuple ('Nom', 'Prenom') → KeyError ; pour deux colonnes il faut des **doubles crochets** `df[['Nom', 'Prenom']]`.
+
+@@ id=pa05 | theme=pd-acces | type=single
+Quel est le type de `df['Titre']` ?
+[x] Series
+[ ] DataFrame
+[ ] list
+[ ] tuple
+>>> Une colonne = une **Series**. Avec des doubles crochets, `df[['Titre']]`, on obtient un DataFrame d'une colonne.
+
+@@ id=pa06 | theme=pd-acces | type=single
+Que renvoie `df.loc[2, :]` ?
+[x] Toutes les colonnes de la ligne d'étiquette 2
+[ ] Le contenu de la troisième colonne
+[ ] Les lignes 0, 1 et 2
+[ ] Les 2 premières colonnes
+>>> Avant la virgule : les **lignes** ; après : les **colonnes**. `:` = toutes. (Piège de l'annale 2025 : « imprime le contenu de la troisième colonne » était faux.)
+
+@@ id=pa07 | theme=pd-acces | type=single
+Combien de colonnes renvoie `df.loc[:, 'B':'D']` si les colonnes sont A, B, C, D, E ?
+[ ] 2
+[x] 3
+[ ] 4
+[ ] 1
+>>> B, C **et D** : avec `loc`, la borne de fin est incluse, y compris pour les colonnes.
+
+@@ id=pa08 | theme=pd-acces | type=single
+On trie `df` (index 0 à 9) avec `df2 = df.sort_values(by='Note')`. La meilleure note est à l'étiquette 7. Que vaut `df2.iloc[-1]` par rapport à `df2.loc[7]` ?
+[x] C'est la même ligne : `iloc[-1]` est la dernière position, qui porte l'étiquette 7
+[ ] `df2.iloc[-1]` provoque une erreur
+[ ] `df2.loc[7]` désigne la 8e ligne de df2
+[ ] Ce sont deux lignes différentes
+>>> Le tri conserve les étiquettes : la plus forte note est en **dernière position** (tri croissant) mais garde l'étiquette 7. `loc` suit les étiquettes, `iloc` les positions.
+
+@@ id=pa09 | theme=pd-acces | type=multi
+Quelles affirmations sur l'itération sont correctes ?
+[x] `for c in df: print(c)` affiche les noms des colonnes
+[x] Avec `for ligne in df.itertuples():`, `ligne[0]` est l'index de la ligne
+[ ] Avec `for ligne in df.itertuples():`, `ligne[0]` est la première colonne
+[x] `for i in df.index: print(df.loc[i, 'Ville'])` affiche les villes
+[ ] `for i in range(len(df)): print(df.iloc[i, 'Ville'])` affiche les villes
+>>> `itertuples()` (avec index=True par défaut) place l'index en position 0, puis les colonnes. `iloc[i, 'Ville']` → erreur : il faudrait `df.iloc[i, n°colonne]` ou `df.loc[...]`.
+
+@@ id=pa10 | theme=pd-acces | type=single
+Avec la Series `s = pd.Series([10, 20, 30], index=['a', 'b', 'c'])`, que vaut `s['b']` ?
+[x] 20
+[ ] 10
+[ ] 30
+[ ] Une erreur
+>>> Accès par **étiquette**. Par position : `s.iloc[1]`.
+
+@@ id=pa11 | theme=pd-acces | type=single
+Que renvoie `df.loc[11, 'Annee_sortie':'Budget_M']` si les colonnes sont Titre, Genre, Annee_sortie, Realisateur, Budget_M, Duree_mn ?
+[x] L'année, le réalisateur et le budget de la ligne d'étiquette 11
+[ ] L'année et le budget seulement
+[ ] Les lignes 11 à la fin
+[ ] Une erreur
+>>> Tranche de colonnes avec `loc` : de Annee_sortie **jusqu'à** Budget_M inclus, donc les colonnes intermédiaires aussi (Realisateur). Attention : la virgule sépare lignes et colonnes ; `df.loc[11:'Annee_sortie':'Budget_M']` serait une erreur.
+
+@@ id=pf01 | theme=pd-filtre | type=single
+Quelle instruction donne les genres des films sortis en 1994 **et** en 1999 ?
+[x] `film_df[(film_df["Annee_sortie"] == 1999) | (film_df["Annee_sortie"] == 1994)]["Genre"]`
+[ ] `film_df[(film_df["Annee_sortie"] == 1999) & (film_df["Annee_sortie"] == 1994)]["Genre"]`
+[ ] `film_df[film_df["Annee_sortie"] == 1999]["Genre"] + film_df[film_df["Annee_sortie"] == 1994]["Genre"]`
+[ ] `film_df[(film_df["Annee_sortie"] == 1999) | (film_df["Annee_sortie"] == 1994)]["Genre"].count()`
+>>> Un film ne peut pas sortir en 1994 ET en 1999 : on veut les lignes où l'année vaut 1994 **OU** 1999 → `|`. Avec `&`, résultat vide. Le `+` additionne deux Series alignées sur des index différents → NaN. `.count()` donne un nombre, pas les genres. (Q5 de l'annale.)
+
+@@ id=pf02 | theme=pd-filtre | type=single
+Que se passe-t-il avec `df[(df['a'] == 1) and (df['b'] == 2)]` ?
+[ ] Cela renvoie les lignes où a vaut 1 et b vaut 2
+[x] Une erreur ValueError (« truth value of a Series is ambiguous »)
+[ ] Cela renvoie un DataFrame vide
+[ ] Cela renvoie les lignes où a vaut 1 ou b vaut 2
+>>> Entre deux Series de booléens, on utilise `&` (et), `|` (ou), `~` (non) — pas `and`, `or`, `not`.
+
+@@ id=pf03 | theme=pd-filtre | type=single
+Quelle instruction est équivalente à `donnee[(donnee['CODGEO'] == '1015') | (donnee['CODGEO'] == '1012')]` ?
+[x] `donnee[donnee['CODGEO'].isin(['1015', '1012'])]`
+[ ] `donnee[donnee['CODGEO'] == ['1015', '1012']]`
+[ ] `donnee.loc['1015':'1012']`
+[ ] `donnee[donnee['CODGEO'].isin('1015', '1012')]`
+>>> `isin` prend **une liste** de valeurs acceptées.
+
+@@ id=pf04 | theme=pd-filtre | type=multi
+On cherche les villes de plus de 100 000 habitants situées en Occitanie. Quelles instructions conviennent ?
+[x] `df[(df['POP'] > 100000) & (df['Region'] == 'Occitanie')]`
+[x] `df.query("POP > 100000 and Region == 'Occitanie'")`
+[ ] `df[df['POP'] > 100000 & df['Region'] == 'Occitanie']`
+[x] `df.loc[(df['POP'] > 100000) & (df['Region'] == 'Occitanie')]`
+[ ] `df[(df['POP'] > 100000) or (df['Region'] == 'Occitanie')]`
+>>> Sans parenthèses, `&` est évalué avant les comparaisons → erreur. Dans `query`, on écrit `and` car c'est une chaîne interprétée par pandas.
+
+@@ id=pf05 | theme=pd-filtre | type=single
+Que renvoie `donnee[donnee['P20_POP'] > 100000].index.tolist()` ?
+[x] La liste des étiquettes d'index des lignes où P20_POP > 100 000
+[ ] Le nombre de villes de plus de 100 000 habitants
+[ ] La liste des populations supérieures à 100 000
+[ ] Une liste de True / False
+>>> `.index` donne les étiquettes des lignes retenues, `.tolist()` les convertit en liste.
+
+@@ id=pf06 | theme=pd-filtre | type=single
+Que sélectionne `donnee[donnee['CODGEO'].str.startswith('75')]` ?
+[x] Les lignes dont le code géographique commence par « 75 »
+[ ] Les 75 premières lignes
+[ ] Les lignes dont le code vaut exactement 75
+[ ] La colonne CODGEO
+>>> L'accesseur `.str` applique les méthodes de chaîne à toute la colonne (la colonne doit contenir du texte).
+
+@@ id=pf07 | theme=pd-filtre | type=single
+On veut la durée moyenne des films de type Thriller. Quelle instruction écrire ?
+[ ] `val_moy = film_df.groupby("Genre")["Duree_mn"].mean()`
+[ ] `val_moy = film_df["Thriller"].mean()`
+[ ] `val_moy = film_df[film_df["Genre"] == "Thriller"].mean()`
+[x] `val_moy = film_df[film_df["Genre"] == "Thriller"]["Duree_mn"].mean()`
+>>> On filtre les lignes, puis on choisit la colonne, puis on moyenne. `groupby` donne la moyenne de **tous** les genres ; `film_df["Thriller"]` cherche une colonne inexistante ; la 3e moyenne toutes les colonnes (texte compris → erreur). (Q9 de l'annale.)
+
+@@ id=pf08 | theme=pd-filtre | type=single
+Quelle est la différence entre `df2 = df[df['POP'] > 1000]` et `df2 = df[df['POP'] > 1000].copy()` ?
+[ ] Aucune
+[x] Avec `.copy()`, df2 est un DataFrame indépendant : le modifier ne touche pas df et évite l'avertissement SettingWithCopyWarning
+[ ] Sans `.copy()`, df est modifié par le filtre
+[ ] `.copy()` trie le résultat
+>>> Bonne pratique du cours : ajouter `.copy()` quand on veut ensuite modifier le sous-ensemble.
+
+@@ id=pf09 | theme=pd-filtre | type=single
+Que fait `df[~(df['Genre'] == 'Drame')]` ?
+[x] Garde les lignes dont le genre n'est PAS « Drame »
+[ ] Garde seulement les drames
+[ ] Supprime la colonne Genre
+[ ] Provoque une erreur
+>>> `~` inverse un masque booléen (équivalent ici à `df['Genre'] != 'Drame'`).
+
+@@ id=pm01 | theme=pd-manip | type=multi
+Comment supprimer la colonne `Capitale` de `capitales` (en modifiant `capitales`) ?
+[x] `capitales.drop(['Capitale'], axis=1, inplace=True)`
+[x] `capitales.drop(columns='Capitale', inplace=True)`
+[ ] `capitales.drop(['Capitale'], axis=0, inplace=True)`
+[x] `capitales = capitales.drop(columns='Capitale')`
+[ ] `capitales.drop(columns='Capitale')`
+>>> `axis=1` = colonnes, `axis=0` = lignes (index). Sans `inplace=True`, il faut récupérer le résultat ; la dernière ligne ne modifie rien.
+
+@@ id=pm02 | theme=pd-manip | type=single
+Que contient `df` après `df = df.dropna(inplace=True)` ?
+[ ] Le DataFrame sans les lignes contenant des NaN
+[x] `None`
+[ ] Le DataFrame d'origine
+[ ] Une erreur est levée
+>>> Avec `inplace=True`, la méthode modifie l'objet et **renvoie None** ; on écrase donc `df` avec None. Il faut choisir : `df = df.dropna()` **ou** `df.dropna(inplace=True)`.
+
+@@ id=pm03 | theme=pd-manip | type=single
+On ne veut supprimer que les lignes où **le titre et le réalisateur** manquent tous les deux. Quelle instruction ?
+[ ] `film_df = film_df.dropna(how="any")`
+[x] `film_df = film_df.dropna(subset=["Titre", "Realisateur"], how="all")`
+[ ] `film_df = film_df.dropna(subset=["Titre", "Realisateur"], how="any")`
+[ ] `film_df = film_df.dropna(axis=1)`
+>>> `subset` limite le test à ces colonnes ; `how="all"` exige qu'elles soient **toutes** NaN. `how="any"` supprimerait une ligne dès qu'un seul des deux manque.
+
+@@ id=pm04 | theme=pd-manip | type=single
+Que fait `capitales.drop_duplicates(subset='Pays', keep='first', inplace=True)` ?
+[x] Supprime les lignes dont le Pays est en double, en gardant la première occurrence
+[ ] Supprime la colonne Pays
+[ ] Garde uniquement les doublons
+[ ] Supprime toutes les lignes en double, y compris la première
+>>> `keep='last'` garderait la dernière ; `keep=False` supprimerait toutes les occurrences.
+
+@@ id=pm05 | theme=pd-manip | type=multi
+À propos des index, quelles affirmations sont correctes ?
+[x] `df.set_index('CODGEO', drop=True, inplace=True)` fait de CODGEO l'index et retire cette colonne des colonnes
+[x] `df.reset_index(drop=True)` renumérote l'index de 0 à n − 1
+[x] `df.index = ['75', '69', '13']` remplace l'index par cette liste (df a 3 lignes)
+[ ] `df.reset_index(drop=False)` supprime définitivement l'ancien index
+>>> Avec `drop=False`, l'ancien index est conservé sous forme de **colonne**.
+
+@@ id=pm06 | theme=pd-manip | type=multi
+Comment renommer la colonne `POP_2021` en `2021` ?
+[x] `df = df.rename(columns={'POP_2021': '2021'})`
+[x] `df.rename(columns={'POP_2021': '2021'}, inplace=True)`
+[ ] `df = df.rename(index={'POP_2021': '2021'})`
+[ ] `df.columns = '2021'`
+>>> `rename(columns={ancien: nouveau})`. `index=` renommerait des étiquettes de lignes. `df.columns = [...]` exige la **liste complète** des noms.
+
+@@ id=pm07 | theme=pd-manip | type=single
+On veut trier `film_df` par ordre **décroissant de budget**. Quelle instruction ?
+[ ] `film_df.sort_index(axis=1, ascending=False, inplace=True)`
+[x] `film_df.sort_values(by="Budget_M", ascending=False, inplace=True)`
+[ ] `film_df.sort_values(by="Budget_M", inplace=True)`
+[ ] `film_df.sort_index(by="Budget_M", ascending=False)`
+>>> `sort_values` trie selon les valeurs d'une colonne. `sort_index(axis=1)` trie les **noms de colonnes** (piège de l'annale 2025). Par défaut, `ascending=True` (croissant).
+
+@@ id=pm08 | theme=pd-manip | type=single
+Que fait `df.sort_index(axis=1)` ?
+[ ] Trie les lignes selon l'index
+[x] Trie les colonnes par ordre alphabétique de leur nom
+[ ] Trie selon la première colonne
+[ ] Supprime l'index
+>>> `axis=0` : on trie les lignes selon leurs étiquettes ; `axis=1` : on réordonne les colonnes selon leur nom.
+
+@@ id=pm09 | theme=pd-manip | type=multi
+Quelles conversions sont correctes ?
+[x] `df['SUPERF'] = df['SUPERF'].astype(float)`
+[x] `df['DNais'] = pd.to_datetime(df['DNais'], format='%d/%m/%Y')` pour des dates comme « 20/07/2000 »
+[ ] `df['SUPERF'].astype(float)` seul suffit à modifier la colonne
+[ ] `pd.to_datetime(df['DNais'], format='%Y-%m-%d')` pour des dates comme « 20/07/2000 »
+>>> `astype` renvoie une nouvelle Series : il faut l'affecter. Le `format` doit correspondre au texte : jour/mois/année → `'%d/%m/%Y'`.
+
+@@ id=pm10 | theme=pd-manip | type=single
+Une colonne d'entiers contient une valeur manquante. Quel est son dtype après `read_csv` ?
+[ ] int64
+[x] float64
+[ ] object
+[ ] NaN
+>>> NaN est un float : toute la colonne passe en `float64` (12 devient 12.0). C'est pour cela que `film_df.loc[4, "Duree_mn"]` affiche 154.0 si la colonne a un trou.
+
+@@ id=pm11 | theme=pd-manip | type=single
+Qu'affiche ce code ?
+```python
+s = pd.Series(['Paris', 'Lyon', 'Rennes', 'Nantes'])
+s = s.drop([1])
+print(s.index.tolist())
+```
+[ ] `[0, 1, 2]`
+[x] `[0, 2, 3]`
+[ ] `[1, 2, 3]`
+[ ] `[0, 1, 2, 3]`
+>>> `drop` supprime l'étiquette 1 ; les autres étiquettes ne sont **pas renumérotées** (il faudrait `reset_index(drop=True)`).
+
+@@ id=pm12 | theme=pd-manip | type=single
+Qu'affiche `print(df['x'].tolist())` ?
+```python
+df = pd.DataFrame({'x': [1, 2, 3]})
+df2 = df
+df2['x'] = 0
+```
+[ ] `[1, 2, 3]`
+[x] `[0, 0, 0]`
+[ ] `[0, 2, 3]`
+[ ] Une erreur
+>>> Comme pour les listes, `df2 = df` ne copie que l'adresse : modifier df2 modifie df. Il faut `df2 = df.copy()`.
+
+@@ id=pm13 | theme=pd-manip | type=multi
+Comment convertir des données pandas en listes ?
+[x] `df.values.tolist()` donne une liste de listes (une par ligne)
+[x] `df['Region'].tolist()` donne la liste des valeurs de la colonne Region
+[ ] `df.tolist()` donne une liste de listes
+[x] `pd.DataFrame(liste_de_listes, columns=['Pays', 'Capitale'])` refait un DataFrame
+>>> `tolist()` existe pour une Series, un Index ou un array numpy (`df.values`), pas directement pour un DataFrame.
+
+@@ id=pm14 | theme=pd-manip | type=single
+Comment mettre les colonnes de `film_df` dans l'ordre Titre, Realisateur, Genre, Annee_sortie, Duree_mn, Budget_M ?
+[x] `film_df = film_df[["Titre", "Realisateur", "Genre", "Annee_sortie", "Duree_mn", "Budget_M"]]`
+[ ] `film_df = film_df["Titre", "Realisateur", "Genre", "Annee_sortie", "Duree_mn", "Budget_M"]`
+[ ] `film_df.sort_index(axis=1)`
+[ ] `film_df.columns.sort()`
+>>> Sélectionner les colonnes avec une **liste** (doubles crochets) les renvoie dans l'ordre de la liste.
+
+@@ id=po01 | theme=pd-ops | type=multi
+On veut retirer 4 à toutes les valeurs de la colonne `Mais` de `reserve`. Quelles instructions le font **effectivement** ?
+[x] `reserve['Mais'] = reserve['Mais'].map(lambda x: x - 4)`
+[x] `reserve['Mais'] = [x - 4 for x in reserve['Mais']]`
+[ ] `reserve['Mais'] - 4`
+[x] `for i in reserve.index: reserve.loc[i, 'Mais'] = reserve.loc[i, 'Mais'] - 4`
+[x] `reserve['Mais'] = reserve['Mais'].apply(lambda x: x - 4)`
+>>> Toutes calculent le bon résultat, mais `reserve['Mais'] - 4` seul ne l'**enregistre** pas dans le DataFrame.
+
+@@ id=po02 | theme=pd-ops | type=single
+Avec `s = pd.Series(['2025', '2026', '2028'])` et `s.map({'2025': '2026', '2026': '2031'})`, que devient '2028' ?
+[ ] '2028' (inchangé)
+[x] NaN
+[ ] Une erreur KeyError
+[ ] '2031'
+>>> Avec `map(dictionnaire)`, une valeur **absente** du dictionnaire devient NaN.
+
+@@ id=po03 | theme=pd-ops | type=multi
+Quelles affirmations sur `apply` sont correctes ?
+[x] `df.apply(f, axis=1)` envoie chaque **ligne** à la fonction f
+[x] `df.apply(f, axis=0)` envoie chaque **colonne** à la fonction f
+[x] `df['col'].apply(f)` applique f à chaque valeur de la colonne
+[ ] `apply` ne fonctionne qu'avec des fonctions lambda
+[ ] `df.apply(lambda x: x['Thon'] + x['Mais'])` calcule une somme par ligne
+>>> Une fonction définie avec `def` fonctionne très bien. Sans `axis=1`, x est une **colonne** : `x['Thon']` cherche une étiquette de ligne « Thon » → KeyError.
+
+@@ id=po04 | theme=pd-ops | type=multi
+On exécute le code suivant. Quelles affirmations sont correctes ?
+```python
+def ma_fonction(x):
+    H = round(x / 60)
+    M = round(x % 60)
+    return f"{H}h{M:02d}"
+
+film_df["Nouvelle_col"] = film_df["Duree_mn"].apply(ma_fonction)
+```
+[ ] Il ajoute deux colonnes "H" et "M"
+[x] Il crée une nouvelle colonne contenant la durée en heures et minutes sous forme de chaîne
+[ ] Il remplace la colonne Duree_mn
+[ ] Il génère une erreur car apply ne peut pas être utilisé avec une fonction personnalisée
+[x] Pour 154 minutes, la nouvelle colonne contient "3h34"
+>>> H et M sont des variables locales à la fonction. `round(154/60)` = round(2.57) = **3** → "3h34" : il aurait fallu `x // 60` pour obtenir "2h34". (Q8 de l'annale + le bug caché.) Remarque : si Duree_mn contient un NaN, `round(NaN)` lève une erreur.
+
+@@ id=po05 | theme=pd-ops | type=single
+Quelle instruction met tous les noms de réalisateurs en minuscules ?
+[x] `df['Realisateur'] = df['Realisateur'].str.lower()`
+[ ] `df['Realisateur'] = df['Realisateur'].lower()`
+[ ] `df['Realisateur'].lower(inplace=True)`
+[ ] `df = df.lower()`
+>>> Les méthodes de chaîne s'appliquent à une colonne via l'accesseur **`.str`** (ou avec `apply(lambda x: x.lower())`). Une Series n'a pas de méthode `lower`.
+
+@@ id=po06 | theme=pd-ops | type=single
+Que contient `plus2` ?
+```python
+reserve = pd.DataFrame({'Mais': [15, 14], 'Thon': [5, 4]})
+plus2 = reserve.apply(lambda x: x + 2)
+```
+[x] Un DataFrame avec 17, 16 dans Mais et 7, 6 dans Thon
+[ ] Une Series avec la somme de chaque colonne + 2
+[ ] Le DataFrame reserve modifié
+[ ] Une erreur : il manque axis
+>>> Par défaut (`axis=0`), chaque colonne est envoyée à la lambda, qui ajoute 2 à toute la Series. `reserve` n'est pas modifié (le résultat est dans `plus2`).
+
+@@ id=po07 | theme=pd-ops | type=single
+Comment ajouter une colonne `Total` égale à Mais + Thon pour chaque ligne ?
+[x] `reserve['Total'] = reserve['Mais'] + reserve['Thon']`
+[ ] `reserve['Total'] = reserve.apply(lambda x: x['Mais'] + x['Thon'], axis=0)`
+[ ] `reserve['Total'] = reserve['Mais' + 'Thon']`
+[ ] `reserve.insert('Total', reserve['Mais'] + reserve['Thon'])`
+>>> L'addition de deux colonnes se fait ligne à ligne. Version apply : il faudrait `axis=1`. `insert` demande d'abord une **position** : `insert(2, 'Total', ...)`.
+
+@@ id=po08 | theme=pd-ops | type=single
+Que fait `df['Statut'] = df['Note'].map(lambda x: 'admis' if x >= 10 else 'ajourné')` ?
+[x] Crée une colonne Statut valant « admis » ou « ajourné » selon la note
+[ ] Filtre les étudiants admis
+[ ] Provoque une erreur : map n'accepte pas de condition
+[ ] Remplace la colonne Note
+>>> Une lambda peut contenir une expression conditionnelle `a if condition else b`.
+
+@@ id=pn01 | theme=pd-nan | type=single
+Que renvoie `df.isna().sum()` ?
+[x] Le nombre de valeurs manquantes dans chaque colonne
+[ ] Le nombre total de lignes
+[ ] Un DataFrame de True / False
+[ ] La somme des valeurs non manquantes
+>>> `isna()` donne des booléens ; `sum()` compte les True (True = 1) colonne par colonne.
+
+@@ id=pn02 | theme=pd-nan | type=single
+On veut remplacer les budgets manquants par le **budget moyen**. Quelle instruction ?
+[ ] `film_df["Budget_M"] = film_df["Budget_M"].fillna(film_df["Budget_M"].mode())`
+[x] `film_df["Budget_M"] = film_df["Budget_M"].fillna(film_df["Budget_M"].mean())`
+[ ] `film_df["Budget_M"].fillna(film_df["Budget_M"].mean())`
+[ ] `film_df["Budget_M"] = film_df["Budget_M"].dropna()`
+>>> `mode()` = valeur la plus fréquente (et c'est une Series !). Sans affectation, `fillna` ne modifie rien. `dropna` ne remplace pas. (Piège de la Q7 de l'annale.)
+
+@@ id=pn03 | theme=pd-nan | type=single
+Pourquoi écrit-on `df['Genre'].fillna(df['Genre'].mode()[0])` avec `[0]` ?
+[x] Parce que `mode()` renvoie une Series (il peut y avoir plusieurs valeurs les plus fréquentes)
+[ ] Parce que `mode()` renvoie une liste vide
+[ ] Pour prendre la valeur la moins fréquente
+[ ] Le `[0]` est inutile
+>>> Sans `[0]`, `fillna` reçoit une Series et remplit selon l'**alignement des index** : résultat faux.
+
+@@ id=pn04 | theme=pd-nan | type=single
+Que vaut `pd.Series([10, None, 20]).mean()` ?
+[x] 15.0
+[ ] 10.0
+[ ] NaN
+[ ] Une erreur
+>>> Les fonctions d'agrégation de pandas (`mean`, `sum`, `count`…) **ignorent les NaN** par défaut : (10 + 20) / 2.
+
+@@ id=pn05 | theme=pd-nan | type=multi
+On veut **homogénéiser** une colonne Genre contenant « Thriller », « thriller » et « Thriller  » (avec espaces). Quelles instructions aident ?
+[x] `df['Genre'] = df['Genre'].str.strip()`
+[x] `df['Genre'] = df['Genre'].str.capitalize()`
+[x] `print(df['Genre'].unique())` pour vérifier les valeurs distinctes
+[ ] `df['Genre'] = df['Genre'].dropna()`
+[ ] `df = df.lower()`
+>>> `strip` enlève les espaces au début/à la fin, `capitalize` uniformise la casse, `unique` permet de contrôler. Un DataFrame n'a pas de méthode `lower`.
+
+@@ id=pn06 | theme=pd-nan | type=multi
+On souhaite des informations sur le DataFrame : nature des données, nombre de lignes, nombre d'éléments non nuls par colonne. Quelles commandes peut-on utiliser ?
+[ ] `print(film_df.size)`
+[ ] `print(film_df.columns)`
+[x] `print(film_df.dtypes)`
+[ ] `print(film_df.isna())`
+[x] `print(film_df.shape)`
+[x] `print(film_df.info())`
+>>> `dtypes` → nature des données ; `shape` → nombre de lignes ; `info()` → tout (lignes, non-null count, dtype). `size` donne le nombre total d'éléments ; `columns` les noms ; `isna()` un tableau de booléens. (Q6 de l'annale.)
+
+@@ id=pn07 | theme=pd-nan | type=single
+Quelle est la différence entre `df.count()` et `len(df)` ?
+[x] `count()` compte les valeurs **non manquantes** de chaque colonne ; `len(df)` donne le nombre total de lignes
+[ ] Aucune
+[ ] `count()` compte les NaN
+[ ] `len(df)` compte les colonnes
+>>> Exemple : 14 films dont un titre manquant → `len(df)` = 14 mais `df['Titre'].count()` = 13.
+
+@@ id=pn08 | theme=pd-nan | type=single
+Comment tester si la valeur à la ligne d'étiquette 3, colonne Note, est manquante ?
+[x] `pd.isna(df.loc[3, 'Note'])`
+[ ] `df.loc[3, 'Note'] == np.nan`
+[ ] `df.loc[3, 'Note'] is None`
+[ ] `df.isna(3, 'Note')`
+>>> NaN n'est jamais égal à lui-même : `== np.nan` vaut toujours False.
+
+@@ id=pg01 | theme=pd-agg | type=single
+Qu'obtient-on avec `df.groupby('Groupe')['Note'].mean()` ?
+[x] Une Series indexée par les groupes, contenant la note moyenne de chaque groupe
+[ ] Un nombre : la moyenne générale
+[ ] Le DataFrame trié par groupe
+[ ] Une liste des notes par groupe
+>>> Une valeur par groupe, avec les groupes comme index.
+
+@@ id=pg02 | theme=pd-agg | type=single
+Qu'affiche ce code ?
+```python
+notes = pd.DataFrame({'Groupe': [1, 2, 1, 2], 'Note': [12, 8, 16, 10]})
+print(notes.groupby('Groupe')['Note'].mean()[1])
+```
+[x] 14.0
+[ ] 9.0
+[ ] 11.5
+[ ] Une erreur
+>>> Groupe 1 : (12 + 16) / 2 = 14.0 ; groupe 2 : 9.0. Le `[1]` est ici l'**étiquette** du groupe 1 (pas la 2e position).
+
+@@ id=pg03 | theme=pd-agg | type=single
+Que calcule `df.sum(axis=1)` ?
+[ ] La somme de chaque colonne
+[x] La somme de chaque ligne
+[ ] La somme totale
+[ ] Le nombre de lignes
+>>> `axis=0` (défaut) : on « écrase » les lignes → une somme par colonne. `axis=1` : une somme par ligne.
+
+@@ id=pg04 | theme=pd-agg | type=single
+Comment obtenir, par département, la **moyenne** de NAISD21 et la **somme** de P20_POP en une seule instruction ?
+[x] `donnee.groupby('code_departement').aggregate({'NAISD21': 'mean', 'P20_POP': 'sum'})`
+[ ] `donnee.groupby('code_departement')['NAISD21', 'P20_POP'].mean().sum()`
+[ ] `donnee.aggregate('code_departement', {'NAISD21': 'mean'})`
+[ ] `donnee.groupby({'NAISD21': 'mean', 'P20_POP': 'sum'})`
+>>> `aggregate` (ou `agg`) avec un dictionnaire colonne → opération.
+
+@@ id=pg05 | theme=pd-agg | type=multi
+Pour une colonne `Genre`, quelles affirmations sont correctes ?
+[x] `df['Genre'].unique()` donne les valeurs distinctes
+[x] `df['Genre'].nunique()` donne le nombre de valeurs distinctes
+[x] `df['Genre'].value_counts()` donne le nombre de films par genre
+[ ] `df.unique()` donne les valeurs distinctes de toutes les colonnes
+>>> `unique` n'existe pas pour un DataFrame (AttributeError).
+
+@@ id=pg06 | theme=pd-agg | type=single
+Que renvoie `donnee.groupby(['nom_region', 'code_departement'])['NAISD21'].mean()` ?
+[x] Une Series avec un index à deux niveaux (région, département)
+[ ] Deux Series séparées
+[ ] Une erreur : on ne peut grouper que sur une colonne
+[ ] Le DataFrame d'origine trié
+>>> On peut grouper sur plusieurs colonnes en passant une liste ; l'index du résultat a alors plusieurs niveaux.
+
+@@ id=pg07 | theme=pd-agg | type=single
+Quelle instruction donne la note **maximale** de chaque groupe ?
+[x] `df.groupby('Groupe')['Note'].max()`
+[ ] `df['Note'].max('Groupe')`
+[ ] `df.max(axis='Groupe')`
+[ ] `df.groupby('Note')['Groupe'].max()`
+>>> On groupe par la colonne qui définit les groupes, puis on choisit la colonne à agréger.
+
+@@ id=pc01 | theme=pd-concat | type=single
+Qu'affiche ce code ?
+```python
+a = pd.DataFrame({'Ville': ['Paris', 'Lyon']})
+b = pd.DataFrame({'Ville': ['Nice']})
+print(pd.concat([a, b]).index.tolist())
+```
+[x] `[0, 1, 0]`
+[ ] `[0, 1, 2]`
+[ ] `[1, 2, 3]`
+[ ] Une erreur
+>>> `concat` garde les index d'origine (doublons possibles). Avec `ignore_index=True` : `[0, 1, 2]`.
+
+@@ id=pc02 | theme=pd-concat | type=multi
+Quelles affirmations sur `pd.concat` sont correctes ?
+[x] Par défaut, il empile les lignes (concaténation verticale)
+[x] Si une colonne n'existe que dans un des DataFrames, les cases manquantes sont remplies par NaN
+[x] `join='inner'` ne garde que les colonnes communes
+[x] `axis=1` met les DataFrames côte à côte (ajout de colonnes)
+[ ] Il nécessite une colonne commune nommée dans `on=`
+>>> C'est `merge` qui utilise `on=` pour fusionner sur une colonne.
+
+@@ id=pc03 | theme=pd-concat | type=single
+Les deux DataFrames ont la ville dans des colonnes de noms différents (`Ville` et `Nom_commune`). Comment les fusionner ?
+[x] `pd.merge(df1, df2, left_on='Ville', right_on='Nom_commune')`
+[ ] `pd.merge(df1, df2, on='Ville')`
+[ ] `pd.concat([df1, df2], on='Ville')`
+[ ] `df1.join(df2, on=['Ville', 'Nom_commune'])`
+>>> `left_on` / `right_on` quand les noms diffèrent. Les deux colonnes sont conservées : on supprime ensuite le doublon.
+
+@@ id=pc04 | theme=pd-concat | type=single
+Par défaut, quelles lignes garde `pd.merge(df1, df2, on='Ville')` ?
+[x] Seulement les villes présentes dans les deux DataFrames (inner)
+[ ] Toutes les villes de df1
+[ ] Toutes les villes des deux DataFrames
+[ ] Seulement les villes de df2
+>>> `how='inner'` par défaut ; `'left'`, `'right'`, `'outer'` changent ce comportement.
+
+@@ id=pc05 | theme=pd-concat | type=single
+Sur quoi se base `df1.join(df2)` pour associer les lignes ?
+[x] Sur l'index des deux DataFrames
+[ ] Sur la première colonne
+[ ] Sur toutes les colonnes de même nom
+[ ] Sur l'ordre alphabétique
+>>> `join` = jointure sur l'**index** ; `lsuffix` / `rsuffix` renomment les colonnes de même nom.
+
+@@ id=pc06 | theme=pd-concat | type=single
+Que fait `pd.concat([df, serie], axis=1)` si `serie` est une Series nommée `'Note'` de même index que `df` ?
+[x] Ajoute une colonne `Note` à droite de df
+[ ] Ajoute une ligne à la fin de df
+[ ] Provoque une erreur : on ne peut pas concaténer une Series
+[ ] Remplace la première colonne de df
+>>> Avec `axis=1`, on ajoute des colonnes (alignées sur l'index) ; une Series devient une colonne.

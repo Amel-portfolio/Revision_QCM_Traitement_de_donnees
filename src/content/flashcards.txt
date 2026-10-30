@@ -1,0 +1,502 @@
+## Statistiques & visualisation | id=stats
+Q: Quelles sont les étapes du **nettoyage** des données (data cleansing) ?
+R: Repérer les données **manquantes**, corriger les données **mal orthographiées**, **homogénéiser** les formats (casse, dates, heures), repérer les données **aberrantes** et les **doublons**. Puis décider quoi faire des données à problème.
+
+Q: Que montre le **quartet d'Anscombe** ?
+R: 4 jeux de données avec **mêmes** moyennes, variances, corrélation (0,816) et droite de régression (y = 0,5x + 3), mais des graphiques **totalement différents** → il faut toujours visualiser.
+
+Q: Les 3 **paramètres de position** ?
+R: **Moyenne** (arithmétique, géométrique, quadratique), **médiane** (valeur centrale), **mode** (valeur la plus fréquente).
+
+Q: Moyenne la plus robuste aux valeurs aberrantes : moyenne ou médiane ?
+R: La **médiane**. (La moyenne géométrique est aussi moins sensible aux valeurs élevées que l'arithmétique.)
+
+Q: Formule de l'écart type σ et de l'écart type estimé s ?
+R: σ = √( (1/N) Σ (xₖ − x̄)² )
+s = √( (1/(**N − 1**)) Σ (xₖ − x̄)² ) → estimation d'une population à partir d'un échantillon (utilisé par `pandas.std()`).
+
+Q: Q1, Q2, Q3 et IQR ?
+R: Q1 : 25 % des valeurs en dessous · Q2 = **médiane** · Q3 : 75 % en dessous · **IQR = Q3 − Q1** (les 50 % de valeurs centrales).
+
+Q: Étendue ?
+R: R = x_max − x_min.
+
+Q: Tableau de **contingence** ?
+R: Tableau à **deux dimensions** croisant deux variables pour voir leur dépendance (ex. sexe × survie sur le Titanic).
+
+Q: Box plot : que représentent le trait, la croix, les bords de la boîte ?
+R: Trait = **médiane** · croix = **moyenne** · haut = **Q3** · bas = **Q1** · moustaches : min/max (Excel) ou **1,5 × IQR** (Plotly).
+
+Q: Quel graphique pour la relation entre 2 variables continues ?
+R: Le **nuage de points** (scatterplot). Une 3e variable en taille → **bubble**. Attention : corrélation ≠ causalité.
+
+Q: Quel graphique pour un **sondage** (pas d'accord → d'accord) ?
+R: Les **barres empilées divergentes** (diverging stacked bar).
+
+Q: Graphiques de **proportions** (part-to-whole) ?
+R: Camembert (pie), donut, **treemap** (hiérarchique), barres empilées, waterfall, arc (hémicycle), Venn, Voronoi, Marimekko.
+
+Q: Graphique standard pour une **évolution dans le temps** ?
+R: La **courbe** (line). Le **slope** met en évidence une tendance entre 2-3 dates ; stacked area selon ce qu'on veut voir.
+
+Q: Règles du **column chart** et de l'**isotype** ?
+R: Column : l'axe doit **commencer à 0**. Isotype (pictogrammes) : **nombres entiers** seulement.
+
+Q: Carte **choroplèthe** ?
+R: Zones géographiques **colorées selon une valeur** (ex. population par région). À utiliser plutôt avec des **taux** que des totaux.
+
+## Variables, chaînes & print | id=bases
+Q: `7 / 2`, `7 // 2`, `7 % 2`, `2 ** 3` ?
+R: `3.5` (toujours float) · `3` (division entière) · `1` (reste) · `8` (puissance).
+
+Q: Que vaut `2 ^ 3` ?
+R: **1** : `^` est le OU exclusif bit à bit, **pas** une puissance. Puissance = `**`.
+
+Q: `3 * 0.1 == 0.3` ?
+R: **False** (3 × 0,1 = 0.30000000000000004). Les float sont des approximations.
+
+Q: Règles de nommage des variables (cours) ?
+R: **Minuscules**, commence par une **lettre**, lettres/chiffres/`_`, **pas d'accent**, un nom qui a du sens. Constantes en **MAJUSCULES**. Indentation 4 espaces, lignes ≤ 79 caractères.
+
+Q: `s[i:j]` sur une chaîne : quels caractères ?
+R: Des indices **i à j − 1** → **j − i** caractères. Indexation à partir de **0** ; `s[-1]` = dernier.
+
+Q: `"bonjour LE monde".capitalize()` ?
+R: `"Bonjour le monde"` : 1re lettre en majuscule **et le reste en minuscules**.
+
+Q: `"bonjour LE monde".title()` ?
+R: `"Bonjour Le Monde"` : majuscule au début de **chaque mot**.
+
+Q: Une méthode comme `texte.upper()` modifie-t-elle `texte` ?
+R: **Non** : les chaînes sont immuables, la méthode **renvoie** une nouvelle chaîne. Il faut écrire `texte = texte.upper()`.
+
+Q: `f"{3.14159:.2f}"`, `f"{1.27893e7:.2e}"`, `format(10, '04d')`, `format(140, 'b')` ?
+R: `3.14` · `1.28e+07` · `0010` · `10001100`
+
+Q: `format(10, '3d')` vs `format(10, '03d')` ?
+R: `' 10'` (complété par des **espaces**) vs `'010'` (complété par des **zéros**).
+
+Q: `\n`, `\t`, `\'`, `\r`, `\b`, `\uXXXX` ?
+R: Retour à la ligne · tabulation · apostrophe échappée · retour en début de ligne · efface un caractère · caractère Unicode.
+
+Q: `print("a", "b", "c")` affiche ?
+R: `a b c` (séparés par des espaces).
+
+Q: `round(2.5)`, `round(3.5)`, `round(154 / 60)` ?
+R: `2`, `4` (arrondi au pair), `3` (2,57 arrondi). Pour une division entière : `154 // 60` = 2.
+
+## Listes | id=listes
+Q: `l[i:j:pas]` ?
+R: Éléments d'indice **i à j − 1**, avec un pas. `l[:j]` début → j−1 ; `l[i:]` i → fin ; `l[::-1]` liste inversée.
+
+Q: `append`, `insert`, `+` ?
+R: `l.append(v)` : ajoute **à la fin** · `l.insert(pos, v)` : insère **à la position** pos · `l1 + l2` : nouvelle liste concaténée.
+
+Q: `del l[i]` vs `l.remove(v)` vs `l.pop(i)` ?
+R: `del` : par **position** · `remove` : par **valeur** (1re occurrence, renvoie None, ValueError si absente) · `pop` : par position **et renvoie** l'élément.
+
+Q: `l.pop()` sans argument ?
+R: Supprime **et renvoie** le **dernier** élément.
+
+Q: `l.sort()` vs `sorted(l)` ?
+R: `sort()` trie **en place** et renvoie **None** · `sorted(l)` renvoie une **nouvelle** liste, `l` inchangée. Ordre inverse : `reverse=True`.
+
+Q: Que vaut `ma_liste` après `ma_liste = ma_liste.sort()` ?
+R: **None** ! (sort renvoie None.)
+
+Q: Trier `['Zoé', 'adam', 'Bob']` ?
+R: `['Bob', 'Zoé', 'adam']` : les **majuscules passent avant** les minuscules.
+
+Q: Supprimer les doublons d'une liste ?
+R: `list(set(l))` (un set = éléments **uniques**, **non ordonnés**).
+
+Q: `range(0, 4)`, `range(0, 4, 2)`, `range(4, 0, -1)` ?
+R: 0, 1, 2, 3 · 0, 2 · 4, 3, 2, 1 (la borne de fin est **exclue**).
+
+Q: Différence entre `l2 = l1` et `l2 = l1.copy()` ?
+R: `=` copie seulement l'**adresse** : modifier l2 modifie l1. `.copy()` crée une liste **indépendante**. (Idem pour les DataFrames.)
+
+Q: Fonctions utiles sur une liste ?
+R: `len`, `min`, `max`, `sum`, `l.count(v)`, `l.index(v)`, `l.copy()`.
+
+Q: `l.append(['e', 'f'])` ajoute combien d'éléments ?
+R: **Un seul** : la liste `['e', 'f']` entière devient le dernier élément.
+
+## Boucles & compréhensions | id=controle
+Q: `break` vs `continue` ?
+R: `break` : **arrête** la boucle · `continue` : passe **directement à l'itération suivante** (la fin du bloc est sautée).
+
+Q: Que fait un `continue` placé avant des `print` dans une boucle ?
+R: Les `print` **ne sont pas exécutés** pour cette itération : rien n'est affiché pour elle.
+
+Q: Dernière valeur affichée ?
+```python
+i = 1
+while i < 10:
+    i = 2 * i
+    print(i)
+```
+R: **16** (2, 4, 8, 16) : le test se fait avant chaque tour.
+
+Q: Tables de vérité de `and` et `or` ?
+R: `and` : True seulement si **les deux** sont True · `or` : True si **au moins un** est True · `not` inverse.
+
+Q: Les 3 formes de list comprehension ?
+R: `[expr for x in l]` · `[expr for x in l if cond]` (**filtre**, if après) · `[a if c1 else b if c2 else c for x in l]` (**choix**, if/else avant).
+
+Q: `[x for x in range(9) if x % 2]` ?
+R: `[1, 3, 5, 7]` (range(9) s'arrête à 8).
+
+Q: `[x.lower() for x in "Hello"]` ?
+R: `['h', 'e', 'l', 'l', 'o']`
+
+Q: Syntaxe d'un dictionnaire en compréhension ?
+R: `{cle: valeur + ajout for cle, valeur in d.items()}`
+
+Q: Une moyenne < 10 va-t-elle directement dans le `else` ?
+R: **Non** : `if / elif / else` teste les conditions **dans l'ordre** ; le `elif` est testé avant le `else`.
+
+## Fonctions | id=fonctions
+Q: Que renvoie une fonction sans `return` ?
+R: **None**.
+
+Q: `return a, b` renvoie quoi ?
+R: Un **tuple** `(a, b)`, qu'on peut déballer : `x, y = f(...)`.
+
+Q: Arguments nommés ?
+R: `f(arg2=d, arg1=c)` : l'**ordre est libre** quand on nomme les arguments.
+
+Q: Paramètre par défaut ?
+R: `def f(notes, arrondi=2):` → `arrondi` est **facultatif** à l'appel.
+
+Q: Lambda ?
+R: Fonction anonyme en une ligne : `lambda x: x + 4`. Très utilisée avec `map` / `apply`.
+
+Q: Formater une date avec `strftime` ?
+R: `%d` jour · `%m` mois · `%Y` année (4 chiffres) · `%A` nom du jour · `%X` heure. Ex. `'%d/%m/%Y'` → 25/09/2026.
+
+## Tuples, dictionnaires, classes & erreurs | id=structures
+Q: Tuple : définition ?
+R: Collection **ordonnée** et **non modifiable** : `t = ('Pomme', 2, 'Pink Lady')`. `t[0] = ...` → **TypeError**.
+
+Q: `ma_var = ("Pommes", 10, "Bananes", 3)` est de type… ?
+R: **tuple** (parenthèses). Un dictionnaire : `{"Pommes": 10}` ; une liste : `[...]`.
+
+Q: `liste[i][j]` dans une liste de listes ?
+R: Le **j-ième élément** de la **i-ème sous-liste**.
+
+Q: Itérer avec déballage sur `[['Paul', 23], ['Lola', 28]]` ?
+R: `for nom, age in liste:` → nom = 'Paul', age = 23, puis 'Lola', 28.
+
+Q: Dictionnaire : accéder, ajouter, supprimer ?
+R: `d['clé']` · `d['nouvelle'] = v` · `d.pop('clé')` (renvoie la valeur) · `d.clear()` (vide) · `del d` (supprime la variable).
+
+Q: `for k in d:` parcourt… ?
+R: Les **clés**. Pour les couples : `for k, v in d.items():`.
+
+Q: `d[0]` sur `{'France': 'Paris'}` ?
+R: **KeyError** : on accède par clé, pas par position.
+
+Q: Rôle de `__init__` et de `self` ?
+R: `__init__` = **constructeur** (appelé à la création de l'objet) ; `self` = l'objet lui-même (1er paramètre des méthodes).
+
+Q: try / except / else / finally ?
+R: `except` : si erreur · `else` : seulement s'il n'y a **pas** eu d'erreur · `finally` : **toujours**.
+
+Q: NameError, TypeError, ValueError, IndexError, KeyError, AttributeError ?
+R: Variable inexistante · mauvais type (`"3" + 4`) · mauvaise valeur (`int("abc")`) · indice hors liste · clé absente · méthode/attribut inexistant (`df.unique()`).
+
+## NumPy, NaN & CSV | id=numpy
+Q: `np.arange(2, 15, 3)` ?
+R: `[ 2  5  8 11 14]` (comme range, fin exclue, mais renvoie un array).
+
+Q: `np.linspace(1, 10, 5)` ?
+R: `[ 1.  3.25  5.5  7.75 10.]` : 5 valeurs régulièrement espacées, **fin incluse**.
+
+Q: `np.dot(A, B)` vs `A * B` ?
+R: `np.dot` = produit **matriciel** (colonnes de A = lignes de B) · `*` = produit **terme à terme** (mêmes formes).
+
+Q: Forme de `np.dot` d'un (2, 3) par un (3, 2) ?
+R: **(2, 2)**.
+
+Q: `[1, 2, 3] * 2` vs `np.array([1, 2, 3]) * 2` ?
+R: Liste : `[1, 2, 3, 1, 2, 3]` (répétition) · array : `[2 4 6]` (multiplication).
+
+Q: Tester un NaN ?
+R: `math.isnan(a)`, `np.isnan(a)`, `pd.isna(a)`. Jamais `a == np.nan` (NaN n'est égal à rien, même pas à lui-même).
+
+Q: Délimiteur et encodage des CSV français ?
+R: **Point-virgule** `;`, virgule décimale, encodage **utf-8**. (Anglo-saxons : virgule.)
+
+Q: `csv.DictReader` donne… ?
+R: Chaque ligne sous forme de **dictionnaire** (clés = en-têtes) → on stocke une liste de dictionnaires. Fermer avec `file.close()`.
+
+Q: `csv.DictWriter` : étapes ?
+R: `open(..., mode='w', newline='')` → `DictWriter(f, fieldnames=[...], delimiter=';')` → `writeheader()` → `writerow(dict)` → `close()`.
+
+Q: Type des nombres lus avec le module csv ?
+R: **str** : il faut convertir avec `float()` / `int()`. pandas gère les types tout seul.
+
+## Expressions régulières | id=regex
+Q: `^`, `$`, `.`, `|` ?
+R: Commence par · finit par · n'importe quel caractère · ou.
+
+Q: `*`, `+`, `?`, `{n}` ?
+R: 0 ou plus · **1 ou plus** · 0 ou 1 · **exactement n**.
+
+Q: `\d`, `\w`, `\s` et leurs majuscules ?
+R: Chiffre · lettre/chiffre/_ · blanc (espace, \t, \n…). `\D`, `\W`, `\S` = les **contraires**.
+
+Q: `re.findall` ?
+R: Liste de **toutes** les correspondances (des **chaînes** ; avec des groupes : liste de **tuples**).
+
+Q: `re.search` vs `re.match` ?
+R: `search` : 1re correspondance **n'importe où** · `match` : seulement **au début** de la chaîne. Les deux renvoient un objet match ou **None**.
+
+Q: Méthodes d'un objet match ?
+R: `.group()` (texte trouvé), `.group(1)` / `.group("nom")` (groupes), `.start()`, `.end()`, `.span()`.
+
+Q: `re.sub` et `re.split` ?
+R: `re.sub(motif, remplacement, texte)` remplace · `re.split(motif, texte)` découpe en liste.
+
+Q: Groupe de capture nommé et rappel dans `sub` ?
+R: `(?P<nom>motif)` ; dans le remplacement : `\1`, `\2`… ou `\g<nom>`.
+
+Q: `.*` vs `.*?` ?
+R: Gourmand (prend le plus possible) vs **paresseux** / lazy (s'arrête à la 1re possibilité).
+
+Q: Pourquoi écrire `r"\d+"` ?
+R: Le préfixe **r** (raw string) garde les `\` tels quels pour le moteur de regex.
+
+Q: Motif d'un code postal exact ?
+R: `r"^\d{5}$"` (ou `re.fullmatch(r"\d{5}", s)`).
+
+Q: Convertir `2026-09-25` en `25/09/2026` ?
+R: `re.sub(r"(\d{4})-(\d{2})-(\d{2})", r"\3/\2/\1", date)`
+
+## pandas : création & informations | id=pd-base
+Q: DataFrame vs Series ?
+R: DataFrame : tableau **2D** avec **index** (lignes) et **columns** · Series : **1 dimension** (une colonne). `df['col']` est une Series.
+
+Q: Nom exact de la classe ?
+R: `pd.DataFrame` (D et F **majuscules**). `pd.Dataframe` → AttributeError.
+
+Q: Créer un DataFrame vide avec des colonnes ?
+R: `pd.DataFrame(columns=['Ville', 'POP_21'])` (avec `index=[...]` on définit des lignes).
+
+Q: Ajouter une ligne d'étiquette 0 ?
+R: `df.loc[0] = ['Paris', 2133111]`
+
+Q: `insert` vs `assign` ?
+R: `df.insert(pos, 'nom', valeurs)` modifie **df** (renvoie None) · `df2 = df.assign(nom=valeurs)` renvoie un **nouveau** DataFrame.
+
+Q: Lire / écrire un CSV français ?
+R: `pd.read_csv('f.csv', sep=';', decimal=',', encoding='utf-8')` · `df.to_csv('f.csv', index=False)`.
+
+Q: Index après `read_csv` ?
+R: Numérique automatique : **0 à n − 1**.
+
+Q: `shape`, `size`, `len(df)` pour 10 lignes × 6 colonnes ?
+R: `(10, 6)` · `60` · `10`. shape et size sont des **attributs** (sans parenthèses).
+
+Q: `dtypes`, `columns`, `index`, `values` ?
+R: Types des colonnes · noms des colonnes · étiquettes des lignes · tableau numpy des valeurs.
+
+Q: `head(n)`, `tail(n)`, `sample(n)` ?
+R: n **premières** lignes · n **dernières** · n **au hasard**.
+
+Q: Que donne `df.info()` ?
+R: Nombre de lignes, colonnes, **Non-Null Count** et **Dtype** de chaque colonne, mémoire. (Renvoie None : `print(df.info())` affiche aussi None.)
+
+Q: Types pandas courants ?
+R: `object` (texte) · `int64` · `float64` (aussi toute colonne numérique avec NaN) · `bool` · `datetime64[ns]`.
+
+## loc, iloc & itération | id=pd-acces
+Q: `iloc` vs `loc` ?
+R: `iloc` : **positions** entières, fin **exclue** · `loc` : **étiquettes**, fin **incluse**.
+
+Q: `df.iloc[2:4]` vs `df.loc[2:4]` (index par défaut) ?
+R: 2 lignes (positions 2, 3) vs **3 lignes** (étiquettes 2, 3, 4).
+
+Q: Une valeur avec iloc / loc ?
+R: `df.iloc[n_ligne, n_col]` · `df.loc['étiquette', 'colonne']` (la **virgule** sépare lignes et colonnes).
+
+Q: Toute une colonne avec iloc ? Plusieurs colonnes avec loc ?
+R: `df.iloc[:, 2]` · `df.loc[:, 'A':'C']` (contiguës, C inclus) ou `df.loc[:, ['A', 'C']]`.
+
+Q: `df.loc[2, :]` ?
+R: La **ligne** d'étiquette 2, toutes ses colonnes.
+
+Q: `df.iloc[4, 'Duree_mn']` ?
+R: **Erreur** : iloc n'accepte que des entiers. → `df.loc[4, 'Duree_mn']`.
+
+Q: `df['col']` vs `df[['col']]` ?
+R: Une **Series** vs un **DataFrame** d'une colonne.
+
+Q: `for x in df:` parcourt… ?
+R: Les **noms des colonnes**.
+
+Q: `itertuples()` : que contient `ligne[0]` ?
+R: L'**index** de la ligne ; `ligne[1]` = 1re colonne. (`index=False` pour ne pas l'avoir.)
+
+Q: Itérer avec loc et avec iloc ?
+R: `for ind in df.index: df.loc[ind, 'col']` · `for i in range(len(df)): df.iloc[i, n]` (plus lents qu'itertuples).
+
+## Filtrer & sélectionner | id=pd-filtre
+Q: Garder les lignes où POP > 100 000 ?
+R: `df[df['POP'] > 100000]` (ajouter `.copy()` pour un DataFrame indépendant).
+
+Q: ET / OU / NON entre conditions pandas ?
+R: `&` / `|` / `~`, avec **chaque condition entre parenthèses**. Jamais `and` / `or` (ValueError).
+
+Q: « Films sortis en 1994 et 1999 » : `&` ou `|` ?
+R: **`|`** : une ligne a une seule année ; avec `&` le résultat est vide.
+
+Q: Alternative à `(x == 'a') | (x == 'b')` ?
+R: `df[df['x'].isin(['a', 'b'])]`
+
+Q: Filtrer puis prendre une colonne ?
+R: `df[df['Genre'] == 'Thriller']['Duree_mn']` ou `df.loc[df['Genre'] == 'Thriller', 'Duree_mn']`.
+
+Q: Étiquettes des lignes retenues ?
+R: `df[cond].index.tolist()`
+
+Q: `query` ?
+R: `df.query('SUPERF > 15 and SUPERF < 15.05')` : condition en **texte** (là, on écrit `and`).
+
+Q: Codes commençant par 75 ?
+R: `df[df['CODGEO'].str.startswith('75')]`
+
+## Supprimer, index, tri, types | id=pd-manip
+Q: Supprimer une ligne / une colonne ?
+R: `df.drop(['lab'], axis=0)` ou `drop(index='lab')` · `df.drop(['col'], axis=1)` ou `drop(columns='col')`.
+
+Q: `dropna(how='any')` vs `how='all'` ?
+R: Supprime la ligne s'il y a **au moins un** NaN vs seulement si **toutes** les valeurs (testées) sont NaN. `subset=[...]` restreint les colonnes testées.
+
+Q: Ne retirer que les lignes où Titre ET Realisateur manquent ?
+R: `df.dropna(subset=['Titre', 'Realisateur'], how='all')`
+
+Q: Piège de `df = df.dropna(inplace=True)` ?
+R: Avec `inplace=True` la méthode renvoie **None** → df vaut None.
+
+Q: `drop_duplicates` ?
+R: `df.drop_duplicates(subset='Pays', keep='first')` (keep='last' ou False).
+
+Q: `set_index` et `reset_index` ?
+R: `set_index('col', drop=True)` : la colonne devient l'index · `reset_index(drop=True)` : index renuméroté 0..n-1.
+
+Q: Renommer des colonnes ?
+R: Toutes : `df.columns = [...]` · certaines : `df.rename(columns={'ancien': 'nouveau'})`.
+
+Q: `sort_values` vs `sort_index(axis=1)` ?
+R: Trie selon les **valeurs** d'une colonne (`by=`, `ascending=False` pour décroissant) vs trie les **noms des colonnes**.
+
+Q: Convertir une colonne en float / en dates ?
+R: `df['c'] = df['c'].astype(float)` · `df['d'] = pd.to_datetime(df['d'], format='%d/%m/%Y')`.
+
+Q: DataFrame → liste de listes ; colonne → liste ?
+R: `df.values.tolist()` · `df['col'].tolist()`.
+
+Q: `s.drop([1])` sur une Series d'index 0..4 ?
+R: Index **0, 2, 3, 4** (pas de renumérotation).
+
+Q: `df2 = df` puis modifier df2 ?
+R: **df est modifié aussi**. Copie indépendante : `df.copy()`.
+
+## map, apply & opérations | id=pd-ops
+Q: Retirer 4 à une colonne (4 façons) ?
+R: `df['c'] = df['c'] - 4` · `df['c'].map(lambda x: x - 4)` · `[x - 4 for x in df['c']]` · boucle `for i in df.index: df.loc[i, 'c'] -= 4`.
+
+Q: `map` avec un dictionnaire ?
+R: Remplace chaque valeur par celle du dictionnaire ; une valeur **absente** devient **NaN**.
+
+Q: `df.apply(f, axis=0)` vs `axis=1` ?
+R: axis=0 (défaut) : f reçoit chaque **colonne** · axis=1 : f reçoit chaque **ligne** (on lit `x['col']`).
+
+Q: `df['col'].apply(f)` ?
+R: Applique f à **chaque valeur** de la colonne (fonction `def` ou lambda).
+
+Q: Annale : que fait `df["Nouvelle_col"] = df["Duree_mn"].apply(ma_fonction)` qui renvoie `f"{H}h{M:02d}"` ?
+R: Crée une **nouvelle colonne** contenant la durée « heures h minutes » sous forme de **chaîne**.
+
+Q: Mettre une colonne de texte en minuscules ?
+R: `df['c'] = df['c'].str.lower()` (ou `.apply(lambda x: x.lower())`). `df['c'].lower()` → AttributeError.
+
+Q: Ajouter une colonne Total = A + B ?
+R: `df['Total'] = df['A'] + df['B']` (ou `df.apply(lambda x: x['A'] + x['B'], axis=1)`).
+
+Q: Accesseur `.str` : méthodes utiles ?
+R: `lower`, `upper`, `strip`, `title`, `capitalize`, `replace`, `startswith`, `contains`, `isnumeric`, `isalpha`, `isalnum`.
+
+## NaN & nettoyage | id=pd-nan
+Q: Repérer les NaN ?
+R: `df.isna()` / `df.isnull()` (booléens) · `df.isna().sum()` (**nombre** par colonne) · `pd.isna(df.loc[i, 'c'])`.
+
+Q: Remplacer les NaN par la moyenne ?
+R: `df['c'] = df['c'].fillna(df['c'].mean())` (ou `.median()`).
+
+Q: Pourquoi `mode()[0]` ?
+R: `mode()` renvoie une **Series** (plusieurs modes possibles) → on prend le premier.
+
+Q: `mean()`, `sum()`, `count()` et les NaN ?
+R: Les NaN sont **ignorés**. `count()` = nombre de valeurs **non** manquantes.
+
+Q: Homogénéiser des catégories ?
+R: `.str.strip()` (espaces), `.str.lower()` / `.capitalize()` / `.title()` (casse), puis vérifier avec `unique()`.
+
+Q: `df.unique()` ?
+R: **AttributeError** : `unique` n'existe que sur une Series → `df['col'].unique()`.
+
+Q: Pourquoi `film_df[film_df['Genre'] == 'Thriller']` oublie-t-il « thriller » ?
+R: La comparaison est **sensible à la casse** : il faut homogénéiser avant de filtrer.
+
+Q: Tests de contenu d'une colonne texte ?
+R: `.str.isnumeric()` (chiffres), `.str.isalpha()` (lettres), `.str.isalnum()` (lettres ou chiffres).
+
+## groupby & agrégations | id=pd-agg
+Q: `df.sum(axis=0)` vs `df.sum(axis=1)` ?
+R: Une somme **par colonne** (défaut) vs une somme **par ligne**.
+
+Q: `groupby` : syntaxe de base ?
+R: `df.groupby('colonne_groupe')['colonne_valeur'].sum()` (ou mean, max, min, count…).
+
+Q: Type du résultat de `df.groupby('G')['N'].mean()` ?
+R: Une **Series indexée par les groupes**.
+
+Q: Opérations différentes selon les colonnes ?
+R: `df.groupby('G').aggregate({'A': 'mean', 'B': 'sum'})` (alias : `agg`).
+
+Q: Grouper sur deux colonnes ?
+R: `df.groupby(['region', 'dpt'])['N'].mean()` → index à **2 niveaux**.
+
+Q: `unique`, `nunique`, `value_counts` ?
+R: Valeurs distinctes · **nombre** de valeurs distinctes · nombre d'**occurrences** de chaque valeur.
+
+Q: Durée moyenne des Thrillers uniquement ?
+R: `df[df['Genre'] == 'Thriller']['Duree_mn'].mean()` (pas groupby, qui donne tous les genres).
+
+Q: `describe()` ?
+R: count, mean, std, min, 25 %, 50 %, 75 %, max des colonnes numériques.
+
+## concat, merge & join | id=pd-concat
+Q: `pd.concat([df1, df2])` ?
+R: Empile **verticalement** ; garde les index (doublons possibles) ; colonnes manquantes → NaN.
+
+Q: Renuméroter l'index après concat ?
+R: `pd.concat([df1, df2], ignore_index=True)`
+
+Q: `join='inner'` dans concat ?
+R: Ne garde que les **colonnes communes**.
+
+Q: `pd.concat([df1, df2], axis=1)` ?
+R: Ajoute des **colonnes** côte à côte (alignement sur l'index) ; accepte une Series.
+
+Q: `pd.merge` : colonne de même nom / de noms différents ?
+R: `pd.merge(df1, df2, on='Ville')` · `pd.merge(df1, df2, left_on='Ville', right_on='Nom_commune')` (les 2 colonnes restent).
+
+Q: Valeurs de `how` dans merge ?
+R: `'inner'` (défaut : clés communes) · `'left'` · `'right'` · `'outer'` (toutes).
+
+Q: `df1.join(df2)` ?
+R: Jointure sur l'**index** ; `lsuffix` / `rsuffix` si des colonnes ont le même nom.

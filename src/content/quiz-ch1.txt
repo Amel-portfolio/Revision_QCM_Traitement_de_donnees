@@ -1,0 +1,944 @@
+@@ id=st01 | theme=stats | type=single
+Dans une série de notes, on ajoute une valeur aberrante très élevée. Quel indicateur de position est le **moins** affecté ?
+[ ] La moyenne arithmétique
+[x] La médiane
+[ ] La moyenne quadratique
+[ ] L'étendue
+>>> La **médiane** est la valeur centrale : une seule valeur extrême ne la déplace presque pas, alors qu'elle « tire » la moyenne arithmétique (et encore plus la quadratique, qui élève au carré). L'étendue (max − min) n'est pas un paramètre de position et elle explose avec une valeur aberrante.
+
+@@ id=st02 | theme=stats | type=single
+Que montre le **quartet d'Anscombe** ?
+[ ] Que la corrélation entre deux variables prouve un lien de cause à effet
+[x] Que quatre jeux de données peuvent avoir les mêmes moyennes, variances, corrélation et droite de régression tout en étant très différents une fois tracés
+[ ] Que la moyenne géométrique est toujours préférable à la moyenne arithmétique
+[ ] Que quatre graphiques identiques peuvent cacher des statistiques très différentes
+>>> Les 4 jeux ont x̄ = 9, ȳ = 7,5, mêmes variances, corrélation ≈ 0,816 et droite y = 0,5x + 3… mais des nuages de points totalement différents. Leçon : **toujours visualiser** les données (même idée avec le Datasaurus).
+
+@@ id=st03 | theme=stats | type=multi
+Quelles affirmations sur les quartiles sont correctes ?
+[x] Q2 est la médiane
+[x] L'écart interquartile vaut IQR = Q3 − Q1
+[ ] 25 % des valeurs sont au-dessus de Q1
+[x] Entre Q1 et Q3 se trouvent 50 % des valeurs
+[ ] L'étendue est égale à Q3 − Q1
+>>> Q1 : 25 % des valeurs **en dessous** (donc 75 % au-dessus). Q2 = médiane (50 %). Q3 : 75 % en dessous. L'IQR = Q3 − Q1 contient les 50 % de valeurs centrales. L'étendue, c'est max − min.
+
+@@ id=st04 | theme=stats | type=single
+Pour la série `2, 4, 4, 5, 15`, quelle affirmation est vraie ?
+[x] La moyenne vaut 6 et la médiane 4
+[ ] La moyenne vaut 4 et la médiane 6
+[ ] Le mode vaut 5
+[ ] L'étendue vaut 15
+>>> Moyenne = 30 / 5 = **6** ; médiane (valeur centrale de la série triée) = **4** ; mode (valeur la plus fréquente) = 4 ; étendue = 15 − 2 = 13. La valeur 15 tire la moyenne vers le haut, pas la médiane.
+
+@@ id=st05 | theme=stats | type=multi
+Lesquels sont des **paramètres de dispersion** ?
+[x] L'écart type
+[x] La variance
+[ ] La médiane
+[x] L'étendue
+[ ] Le mode
+[x] Les quartiles
+>>> Dispersion (étalement) : écart type, variance, étendue, minimum, maximum, quartiles. Position (où se situe le « centre ») : moyenne, médiane, mode.
+
+@@ id=st06 | theme=stats | type=single
+Quelle est la différence entre l'écart type σ et l'écart type estimé s ?
+[ ] s divise par N + 1
+[x] s divise par N − 1 : c'est l'estimation de l'écart type d'une population à partir d'un échantillon
+[ ] σ ne s'applique qu'aux données qualitatives
+[ ] Il n'y a aucune différence
+>>> σ = √((1/N) Σ(xₖ − x̄)²) ; s = √((1/(N−1)) Σ(xₖ − x̄)²). En pandas, `.std()` utilise N − 1 par défaut.
+
+@@ id=st07 | theme=stats | type=single
+Un **tableau de contingence** sert à…
+[ ] compter les valeurs manquantes d'une colonne
+[x] croiser deux variables dans un tableau à deux dimensions pour étudier leur dépendance
+[ ] représenter une série temporelle
+[ ] calculer les quartiles d'une distribution
+>>> Exemple du cours : Homme / Femme × Sauvé / Non sauvé (Titanic). Le tableau de fréquences, lui, compte les occurrences d'une seule variable.
+
+@@ id=st08 | theme=stats | type=single
+Quelle est la moyenne **géométrique** de 2 et 8 ?
+[x] 4
+[ ] 5
+[ ] 16
+[ ] 3
+>>> Moyenne géométrique = (2 × 8)^(1/2) = √16 = **4**. La moyenne arithmétique vaudrait 5.
+
+@@ id=vi01 | theme=visu | type=multi
+Sur une boîte à moustaches (box plot) du cours, quelles affirmations sont vraies ?
+[x] Le trait dans la boîte représente la médiane
+[ ] Le trait dans la boîte représente la moyenne
+[x] Le haut de la boîte correspond au 3e quartile
+[x] Sous Plotly, les moustaches s'étendent jusqu'à 1,5 × IQR
+[ ] Sous Excel, les moustaches s'arrêtent à Q1 et Q3
+>>> Trait = **médiane**, croix = moyenne, haut de boîte = Q3 (75 %), bas = Q1 (25 %). Moustaches : min et max sous Excel, 1,5 × IQR sous Plotly.
+
+@@ id=vi02 | theme=visu | type=single
+Quel graphique est la façon standard de montrer la relation entre **deux variables continues** ?
+[ ] Le camembert
+[x] Le nuage de points (scatterplot)
+[ ] L'histogramme
+[ ] La treemap
+>>> Le scatterplot place chaque observation selon ses deux valeurs. Attention : corrélation ne veut pas dire causalité.
+
+@@ id=vi03 | theme=visu | type=single
+On veut présenter les résultats d'un **sondage** (« Pas du tout d'accord » … « Tout à fait d'accord »). Quel graphique est le plus adapté ?
+[ ] Une courbe (line)
+[x] Des barres empilées divergentes (diverging stacked bar)
+[ ] Une carte choroplèthe
+[ ] Un nuage de points
+>>> Le *diverging stacked bar* met les avis négatifs d'un côté de zéro et les positifs de l'autre : idéal pour des réponses du type désaccord / accord (exemple « Évaluation du cours »).
+
+@@ id=vi04 | theme=visu | type=multi
+Quels graphiques sont adaptés pour montrer des **proportions** (une partie d'un tout) ?
+[x] Le camembert (pie)
+[x] Le donut
+[x] La treemap
+[ ] Le nuage de points
+[ ] La courbe (line)
+>>> Pie, donut, treemap (données hiérarchiques), barres empilées, waterfall, arc… sont des graphiques « part-to-whole ». Le scatterplot montre une corrélation, la line une évolution dans le temps.
+
+@@ id=vi05 | theme=visu | type=single
+Quel graphique est la façon standard de montrer l'**évolution dans le temps** d'une série ?
+[x] La courbe (line)
+[ ] Le camembert
+[ ] Le radar
+[ ] La treemap
+>>> La *line chart* est le standard pour une série temporelle (le *slope* met en évidence une tendance entre 2 ou 3 dates).
+
+@@ id=vi06 | theme=visu | type=single
+Quelle règle s'applique aux **isotypes** (pictogrammes) ?
+[ ] Il faut toujours commencer l'axe à 50 %
+[x] On ne les utilise qu'avec des nombres entiers (on ne coupe pas un pictogramme)
+[ ] Ils sont réservés aux données temporelles
+[ ] Ils remplacent les box plots
+>>> « Use only with whole numbers (do not slice off an arm to represent a decimal) ».
+
+@@ id=vi07 | theme=visu | type=single
+Qu'est-ce qu'une carte **choroplèthe** ?
+[x] Une carte dont les zones (régions, départements…) sont colorées selon une valeur
+[ ] Une carte où chaque événement est un point
+[ ] Une carte des flux entre deux villes
+[ ] Un graphique en barres trié
+>>> Exemple du cours : population par région en 2020. Bonne pratique : y représenter des taux / ratios plutôt que des totaux.
+
+@@ id=vi08 | theme=visu | type=single
+Quelle règle s'applique à un diagramme en **colonnes** (column chart) ?
+[x] L'axe des valeurs doit commencer à 0
+[ ] Il faut au moins 10 colonnes
+[ ] Les colonnes doivent être triées par ordre alphabétique
+[ ] Il ne peut montrer qu'une seule série
+>>> « The standard way to compare the size of things. Must always start at 0 on the axis. » Sinon on exagère visuellement les écarts.
+
+@@ id=ba01 | theme=bases | type=single
+Que vaut `7 / 2` en Python 3 ?
+[ ] 3
+[x] 3.5
+[ ] 4
+[ ] 1
+>>> `/` donne toujours un **float**. La division entière est `7 // 2` = 3 et le reste `7 % 2` = 1.
+
+@@ id=ba02 | theme=bases | type=single
+Que valent respectivement `2 ** 3` et `2 ^ 3` ?
+[ ] 8 et 8
+[x] 8 et 1
+[ ] 8 et 6
+[ ] 6 et 8
+>>> `**` est la puissance (2³ = 8). `^` est le **OU exclusif bit à bit** : 2 = 0b10, 3 = 0b11 → 0b01 = 1. Ne jamais écrire `x^2` pour un carré !
+
+@@ id=ba03 | theme=bases | type=single
+Qu'affiche `print(3 * 0.1 == 0.3)` ?
+[ ] True
+[x] False
+[ ] 0.3
+[ ] Une erreur
+>>> `3 * 0.1` vaut en réalité 0.30000000000000004 (0,1 n'est pas représentable exactement en binaire). On ne compare jamais deux float avec `==`.
+
+@@ id=ba04 | theme=bases | type=single
+Avec `nom = "Philippe"`, que vaut `nom[0:5]` ?
+[ ] "Philip"
+[x] "Phili"
+[ ] "hilip"
+[ ] "Philippe"
+>>> `[i:j]` prend les indices i à j−1, soit j − i = 5 caractères : P(0) h(1) i(2) l(3) i(4).
+
+@@ id=ba05 | theme=bases | type=multi
+Soit `texte = "bonjour LE monde"`. Quelles affirmations sont correctes ?
+[ ] `texte.capitalize()` vaut `"Bonjour LE monde"`
+[x] `texte.title()` vaut `"Bonjour Le Monde"`
+[x] `texte.upper()` vaut `"BONJOUR LE MONDE"`
+[ ] Après l'instruction `texte.lower()`, la variable `texte` vaut `"bonjour le monde"`
+[x] `texte[-5:]` vaut `"monde"`
+>>> `capitalize()` met la 1re lettre en majuscule **et tout le reste en minuscules** → `"Bonjour le monde"`. Les méthodes de chaîne **renvoient une nouvelle chaîne** : `texte.lower()` seul ne modifie pas `texte` (il faudrait `texte = texte.lower()`).
+
+@@ id=ba06 | theme=bases | type=single
+Que renvoie `format(10, '04d')` ?
+[ ] `'  10'`
+[x] `'0010'`
+[ ] `'10.00'`
+[ ] `'1010'`
+>>> `04d` : entier sur 4 chiffres complété par des **zéros**. `'4d'` complète par des espaces (`'  10'`), `'b'` donne le binaire (`'1010'`).
+
+@@ id=ba07 | theme=bases | type=single
+Qu'affiche `print(f"{2/3:.2f}")` ?
+[ ] 0.66
+[x] 0.67
+[ ] 0.6666
+[ ] 6.67e-01
+>>> `.2f` arrondit à 2 chiffres après la virgule : 0.6666… → **0.67**. (`.2e` donnerait 6.67e-01.)
+
+@@ id=ba08 | theme=bases | type=multi
+Lesquels de ces noms respectent les règles **et** les bonnes pratiques du cours pour une variable ?
+[x] `valeur_x`
+[ ] `2eme_valeur`
+[x] `note_moyenne`
+[ ] `NoteMoyenne`
+[ ] `température`
+>>> Une variable : en minuscules, commence par une lettre, lettres/chiffres/`_`, pas d'accent. `2eme_valeur` est même **invalide** (commence par un chiffre). `NoteMoyenne` fonctionne mais n'est pas en minuscules. Les MAJUSCULES sont réservées aux constantes (`TAUX_TVA`).
+
+@@ id=ba09 | theme=bases | type=single
+Qu'affiche `print("a", "b", "c")` ?
+[ ] abc
+[x] a b c
+[ ] a,b,c
+[ ] ('a', 'b', 'c')
+>>> Plusieurs arguments dans `print` sont séparés par **un espace**.
+
+@@ id=ba10 | theme=bases | type=single
+Que renvoie `round(2.5)` ?
+[x] 2
+[ ] 3
+[ ] 2.5
+[ ] 2.0
+>>> Python arrondit « au pair le plus proche » quand on est pile au milieu : `round(2.5)` = 2, `round(3.5)` = 4. Et `round` sans 2e argument renvoie un **int**.
+
+@@ id=ba11 | theme=bases | type=single
+Quel est le type de `val2 = 1e3` ?
+[ ] int
+[x] float
+[ ] str
+[ ] bool
+>>> La notation scientifique crée toujours un float : `1e3` vaut `1000.0`.
+
+@@ id=ba12 | theme=bases | type=single
+Avec `mot = "apprenti"`, que vaut `mot[3:7]` ?
+[ ] "pren"
+[x] "rent"
+[ ] "prent"
+[ ] "renti"
+>>> a(0) p(1) p(2) **r(3) e(4) n(5) t(6)** i(7) : indices 3 à 6 → "rent".
+
+@@ id=ba13 | theme=bases | type=single
+Dans une chaîne, que produit le caractère spécial `\t` ?
+[ ] Un retour à la ligne
+[x] Une tabulation
+[ ] Un retour en début de ligne
+[ ] L'effacement du caractère précédent
+>>> `\n` : retour à la ligne · `\t` : tabulation · `\r` : retour en début de ligne · `\b` : efface un caractère.
+
+@@ id=li01 | theme=listes | type=single
+Avec `l = ['a', 'b', 'c', 'd', 'e']`, que vaut `l[1:3]` ?
+[ ] `['a', 'b', 'c']`
+[x] `['b', 'c']`
+[ ] `['b', 'c', 'd']`
+[ ] `'b'`
+>>> Indices 1 et 2 (la fin 3 est exclue) : 3 − 1 = 2 éléments.
+
+@@ id=li02 | theme=listes | type=single
+Avec `l = ['a', 'b', 'c', 'd', 'e']`, que vaut `l[-2]` ?
+[ ] `'b'`
+[x] `'d'`
+[ ] `['d', 'e']`
+[ ] Une erreur : les indices négatifs n'existent pas
+>>> `l[-1]` est le dernier élément, `l[-2]` l'avant-dernier.
+
+@@ id=li03 | theme=listes | type=multi
+Soit `ma_var = ["Voiture", "Avion", "Moto", "Bus", "Train", "Trottinette"]`. Chaque instruction est appliquée à cette liste d'origine. Lesquelles sont correctes ?
+[x] `print(ma_var[4])` et `print(ma_var[-2])` affichent tous deux "Train"
+[ ] `x = ma_var.pop(3)` met "Moto" dans `x`
+[x] `print(ma_var[:3])` affiche "Voiture", "Avion", "Moto"
+[x] `ma_var.pop()` supprime "Trottinette"
+[ ] `ma_var.append("Poussette")` ajoute "Poussette" en début de liste
+>>> Indices : Voiture 0, Avion 1, Moto 2, **Bus 3**, Train 4, Trottinette 5. `pop(3)` renvoie donc "Bus". `append` ajoute **à la fin** (pour le début : `insert(0, ...)`). C'est la question 2 de l'annale 2025.
+
+@@ id=li04 | theme=listes | type=single
+Avec `l = ['a', 'b', 'c']`, que vaut `l` après `l.insert(1, 'z')` ?
+[ ] `['z', 'a', 'b', 'c']`
+[x] `['a', 'z', 'b', 'c']`
+[ ] `['a', 'b', 'z', 'c']`
+[ ] `['a', 'z', 'c']`
+>>> `insert(position, valeur)` insère **à l'indice 1** et décale les suivants (rien n'est remplacé).
+
+@@ id=li05 | theme=listes | type=multi
+Avec `l = ['a', 'b', 'c', 'd']`, quelles affirmations sont correctes (chacune sur la liste d'origine) ?
+[x] `del l[0]` supprime `'a'`
+[ ] `x = l.remove('c')` met `'c'` dans `x`
+[x] `x = l.pop(0)` met `'a'` dans `x`
+[x] `l.remove('z')` provoque une erreur (ValueError)
+[ ] `l.append(['e', 'f'])` ajoute deux éléments à la liste
+>>> `remove` supprime par **valeur** et renvoie `None`. `pop` supprime par **position** et **renvoie** l'élément. `append` ajoute **un seul** élément (ici la liste `['e', 'f']` entière, la longueur passe à 5) ; pour ajouter deux éléments : `l + ['e', 'f']` ou `l.extend([...])`.
+
+@@ id=li06 | theme=listes | type=single
+Qu'affiche ce code ?
+```python
+l = [3, 1, 2]
+r = l.sort()
+print(r)
+```
+[ ] `[1, 2, 3]`
+[x] `None`
+[ ] `[3, 1, 2]`
+[ ] Une erreur
+>>> `sort()` trie **en place** et renvoie `None`. `l` vaut bien `[1, 2, 3]`, mais `r` vaut `None`. Pour récupérer une liste triée : `r = sorted(l)`.
+
+@@ id=li07 | theme=listes | type=single
+Que renvoie `sorted(['Bleu', 'Rouge', 'Vert', 'Jaune'], reverse=True)` ?
+[ ] `['Bleu', 'Jaune', 'Rouge', 'Vert']`
+[x] `['Vert', 'Rouge', 'Jaune', 'Bleu']`
+[ ] `['Jaune', 'Vert', 'Rouge', 'Bleu']`
+[ ] `None`
+>>> Ordre alphabétique inversé. `sorted` renvoie une **nouvelle** liste et ne modifie pas l'originale.
+
+@@ id=li08 | theme=listes | type=single
+Que vaut `list(range(2, 10, 3))` ?
+[ ] `[2, 5, 8, 11]`
+[x] `[2, 5, 8]`
+[ ] `[3, 6, 9]`
+[ ] `[2, 3, 4, 5, 6, 7, 8, 9]`
+>>> On part de 2, on avance de 3, et on s'arrête **avant** 10 : 2, 5, 8.
+
+@@ id=li09 | theme=listes | type=single
+Qu'affiche ce code ?
+```python
+a = [1, 2]
+b = a
+b.append(3)
+print(a)
+```
+[ ] `[1, 2]`
+[x] `[1, 2, 3]`
+[ ] `[3]`
+[ ] Une erreur
+>>> `b = a` ne copie pas la liste : `a` et `b` désignent **le même objet**. Pour une vraie copie : `b = a.copy()`.
+
+@@ id=li10 | theme=listes | type=multi
+Soit `liste_3 = [1, 2, 7, 10, 'Bleu', 'Rouge', 'Vert', 'Jaune']`. Quelles affirmations sont correctes ?
+[x] `liste_3[2:5]` vaut `[7, 10, 'Bleu']`
+[x] `liste_3[:4]` vaut `[1, 2, 7, 10]`
+[ ] `liste_3[0:8:3]` vaut `[1, 7, 'Bleu']`
+[ ] `liste_3[3:]` contient 4 éléments
+[x] `len(liste_3)` vaut 8
+>>> `[0:8:3]` prend les indices 0, 3, 6 → `[1, 10, 'Vert']`. `liste_3[3:]` va de l'indice 3 à la fin : 10, Bleu, Rouge, Vert, Jaune → **5** éléments.
+
+@@ id=li11 | theme=listes | type=single
+Combien d'éléments contient `list(set([3, 1, 3, 2, 1]))` ?
+[ ] 5
+[x] 3
+[ ] 2
+[ ] 1
+>>> `set` supprime les doublons : {1, 2, 3}. L'ordre d'un set n'est pas garanti.
+
+@@ id=li12 | theme=listes | type=single
+Que renvoie `sorted(['Zoé', 'adam', 'Bob'])` ?
+[ ] `['adam', 'Bob', 'Zoé']`
+[x] `['Bob', 'Zoé', 'adam']`
+[ ] `['Zoé', 'Bob', 'adam']`
+[ ] `['adam', 'Zoé', 'Bob']`
+>>> Le tri des chaînes respecte l'ordre des codes de caractères : **toutes les majuscules passent avant les minuscules**. D'où l'intérêt d'homogénéiser la casse avant de trier.
+
+@@ id=li13 | theme=listes | type=single
+Après `l = [1, 2, 3]` puis `l2 = l + [4]`, que vaut `l` ?
+[x] `[1, 2, 3]`
+[ ] `[1, 2, 3, 4]`
+[ ] `[4]`
+[ ] `None`
+>>> La concaténation `+` crée une **nouvelle** liste : `l` n'est pas modifiée (contrairement à `append`).
+
+@@ id=co01 | theme=controle | type=single
+Qu'affiche ce code du cours ?
+```python
+val1 = 5
+val2 = 10
+val3 = 4
+if val3 > 5:
+    print(val3)
+elif val1 < val2 and val2 > val3:
+    print(val2 + val3)
+else:
+    print(val1)
+```
+[ ] 4
+[x] 14
+[ ] 5
+[ ] 14 puis 5
+>>> `4 > 5` est faux → on teste le `elif` : `5 < 10` et `10 > 4` sont vrais → on affiche 10 + 4 = 14. Une seule branche s'exécute.
+
+@@ id=co02 | theme=controle | type=single
+Quelle est la **dernière** valeur affichée ?
+```python
+i = 1
+while i < 10:
+    i = 2 * i
+    print(i)
+```
+[ ] 8
+[x] 16
+[ ] 10
+[ ] 32
+>>> Affichages : 2, 4, 8, **16**. Quand i vaut 8, la condition 8 < 10 est vraie : on double (16) et on affiche avant de re-tester.
+
+@@ id=co03 | theme=controle | type=single
+Qu'affiche ce code ?
+```python
+i = 0
+while i < 15:
+    i = i + 1
+    if i == 8:
+        continue
+    print(i)
+    if i == 11:
+        break
+```
+[ ] Les nombres de 1 à 15
+[ ] Les nombres de 1 à 11
+[x] Les nombres de 1 à 11 sauf 8
+[ ] Les nombres de 1 à 7
+>>> `continue` saute le `print` quand i = 8 ; `break` arrête la boucle juste après avoir affiché 11.
+
+@@ id=co04 | theme=controle | type=multi
+Quelles expressions valent `True` ?
+[ ] `True and False`
+[x] `(2 > 3) or (1 == 1)`
+[x] `not (3 > 4)`
+[ ] `5 != 5`
+[ ] `"a" == "A"`
+>>> `and` exige que les deux soient vrais ; `or` qu'au moins un le soit. `not` inverse. Les comparaisons de chaînes sont sensibles à la casse.
+
+@@ id=co05 | theme=controle | type=single
+Combien vaut `count` à la fin ?
+```python
+count = 0
+for c in "Les apprentis inscrits":
+    if c == "i":
+        count += 1
+```
+[ ] 2
+[x] 3
+[ ] 4
+[ ] 22
+>>> On parcourt la chaîne **caractère par caractère** : appreNTIs (1 « i ») + Inscrits (2 « i ») = 3. Vérification possible avec `"Les apprentis inscrits".count("i")`.
+
+@@ id=co06 | theme=controle | type=multi
+On reprend le calcul de note du TD : moyenne si elle est ≥ 10 (modalité 1) ; sinon `(n1+n2+2*n3)/4` si n1 < 10, n2 < 10 et n3 > 10 (modalité 2) ; sinon `(n1+n2+n3)/2.5` (modalité 3). Quelles affirmations sont correctes ?
+[x] (10, 8, 12) donne 10.0 avec la modalité 1
+[x] (8, 6, 11) donne 9.0 avec la modalité 2
+[x] (5, 5, 8) donne 7.2 avec la modalité 3
+[ ] (12, 4, 11) donne la modalité 2
+[ ] Si la moyenne est inférieure à 10, on passe automatiquement dans le `else`
+>>> (10+8+12)/3 = 10 → modalité 1. (8+6+11)/3 ≈ 8,33 ; 8 et 6 < 10, 11 > 10 → (8+6+22)/4 = 9.0. (5,5,8) : moyenne 6, 8 n'est pas > 10 → 18/2,5 = 7,2. (12,4,11) : moyenne 9 mais 12 n'est pas < 10 → modalité 3. Une moyenne < 10 teste d'abord le `elif`.
+
+@@ id=co07 | theme=controle | type=single
+Que se passe-t-il ?
+```python
+i = 0
+while i < 5:
+    print(i)
+```
+[ ] Le code affiche 0 1 2 3 4
+[x] La boucle ne s'arrête jamais
+[ ] Le code n'affiche rien
+[ ] Une erreur de syntaxe
+>>> `i` n'est jamais modifié : `0 < 5` reste vrai pour toujours → boucle infinie. Il manque `i += 1`.
+
+@@ id=co08 | theme=controle | type=multi
+Que peut-on dire de `break` et `continue` ?
+[x] `break` arrête complètement la boucle
+[x] `continue` passe directement à l'itération suivante
+[ ] `continue` arrête la boucle mais exécute le reste du bloc
+[x] Les deux s'utilisent dans une boucle `for` comme dans une boucle `while`
+[ ] `break` saute seulement l'itération en cours
+>>> `break` = sortie définitive ; `continue` = on abandonne le tour en cours (le reste du bloc est sauté) et on passe au suivant.
+
+@@ id=co09 | theme=controle | type=single
+Que vaut `total` ?
+```python
+total = 0
+for i in range(1, 5):
+    total += i
+```
+[ ] 15
+[x] 10
+[ ] 4
+[ ] 5
+>>> `range(1, 5)` donne 1, 2, 3, 4 → 1 + 2 + 3 + 4 = 10.
+
+@@ id=lc01 | theme=comprehension | type=single
+Avec `note1 = [5.0, 4.0, 8, 2.0]`, que vaut `[x + 5 for x in note1]` ?
+[x] `[10.0, 9.0, 13, 7.0]`
+[ ] `[10, 9, 13, 7]`
+[ ] `[5.0, 4.0, 8, 2.0, 5]`
+[ ] `[10.0, 9.0, 13.0, 7.0]`
+>>> On ajoute 5 à chaque élément. Les float restent des float (10.0), l'entier 8 donne l'entier 13.
+
+@@ id=lc02 | theme=comprehension | type=single
+Avec `note1 = [5.0, 4.0, 8, 2.0]`, que vaut `[x for x in note1 if x < 5]` ?
+[ ] `[5.0, 4.0, 2.0]`
+[x] `[4.0, 2.0]`
+[ ] `[True, True, False, True]`
+[ ] `[4.0, 8, 2.0]`
+>>> Le `if` après le `for` est un **filtre** : on ne garde que les éléments strictement inférieurs à 5 (5.0 n'est pas < 5).
+
+@@ id=lc03 | theme=comprehension | type=single
+Avec `note1 = [5.0, 4.0, 8, 2.0]`, que vaut cette liste ?
+```python
+[x*1.5 if x < 5 else x*1.2 if x < 10 else x+2 for x in note1]
+```
+[ ] `[7.5, 6.0, 9.6, 3.0]`
+[x] `[6.0, 6.0, 9.6, 3.0]`
+[ ] `[6.0, 6.0, 10, 3.0]`
+[ ] `[6.0, 4.0, 9.6, 2.0]`
+>>> 5.0 n'est pas < 5 mais < 10 → 5 × 1,2 = 6.0 ; 4.0 → 4 × 1,5 = 6.0 ; 8 → 8 × 1,2 = 9.6 ; 2.0 → 3.0.
+
+@@ id=lc04 | theme=comprehension | type=single
+Que vaut `[x for x in range(9) if x % 2]` ?
+[ ] `[1, 3, 5, 7, 9]`
+[x] `[1, 3, 5, 7]`
+[ ] `[0, 2, 4, 6, 8]`
+[ ] `[2, 4, 6, 8]`
+>>> `range(9)` va de 0 à **8**. `x % 2` vaut 1 (vrai) pour les impairs, 0 (faux) pour les pairs. Piège de l'annale 2025.
+
+@@ id=lc05 | theme=comprehension | type=multi
+Lesquelles de ces list comprehensions sont **syntaxiquement valides** ?
+[x] `[x if x > 0 else 0 for x in l]`
+[ ] `[x for x in l if x > 0 else 0]`
+[x] `[x for x in l if x > 0]`
+[ ] `[x if x > 0 for x in l]`
+[x] `[x*2 if x > 0 else x for x in l if x != 3]`
+>>> `if … else` (choix de valeur) se place **avant** le `for` ; un `if` seul (filtre) se place **après**. Les deux peuvent se combiner (dernière proposition).
+
+@@ id=lc06 | theme=comprehension | type=single
+Que vaut `[x.lower() for x in "Hello"]` ?
+[ ] `"hello"`
+[x] `['h', 'e', 'l', 'l', 'o']`
+[ ] `['hello']`
+[ ] Une erreur : on ne peut pas itérer sur une chaîne
+>>> Itérer sur une chaîne donne ses caractères un par un ; on obtient une **liste** de 5 lettres.
+
+@@ id=lc07 | theme=comprehension | type=single
+Que vaut `{k: v * 2 for k, v in {'a': 1, 'b': 2}.items()}` ?
+[x] `{'a': 2, 'b': 4}`
+[ ] `{'aa': 1, 'bb': 2}`
+[ ] `[('a', 2), ('b', 4)]`
+[ ] `{'a': 1, 'b': 2, 'a': 2, 'b': 4}`
+>>> Dictionnaire en compréhension : mêmes clés, valeurs multipliées par 2.
+
+@@ id=lc08 | theme=comprehension | type=single
+Combien d'éléments contient `[x for x in range(1, 101) if x % 3 != 0]` ?
+[ ] 100
+[ ] 33
+[x] 67
+[ ] 66
+>>> De 1 à 100, il y a 33 multiples de 3 (3, 6, …, 99) : 100 − 33 = 67 éléments non divisibles par 3.
+
+@@ id=lc09 | theme=comprehension | type=single
+Que vaut `[x + 2 if x < 8 else x + 5 if x < 14 else x for x in [5, 12, 4, 15, 8]]` ?
+[x] `[7, 17, 6, 15, 13]`
+[ ] `[7, 14, 6, 20, 10]`
+[ ] `[7, 17, 6, 20, 13]`
+[ ] `[7, 17, 6, 15, 10]`
+>>> 5 → 7 ; 12 (pas < 8 mais < 14) → 17 ; 4 → 6 ; 15 (aucune condition) → 15 ; 8 (pas < 8, mais < 14) → 13. Question tirée de l'annale 2025.
+
+@@ id=fo01 | theme=fonctions | type=single
+Qu'affiche ce code ?
+```python
+def double(x):
+    x * 2
+
+print(double(3))
+```
+[ ] 6
+[x] None
+[ ] 3
+[ ] Une erreur
+>>> Sans `return`, une fonction renvoie `None`. Le calcul `x * 2` est fait puis perdu.
+
+@@ id=fo02 | theme=fonctions | type=single
+Que contient `r` ?
+```python
+def calc(a, b):
+    return a + b, a * b
+
+r = calc(2, 3)
+```
+[ ] 5
+[ ] 6
+[x] Le tuple `(5, 6)`
+[ ] Une erreur : une fonction ne renvoie qu'une valeur
+>>> Plusieurs valeurs après `return` sont renvoyées dans un **tuple**. On peut les séparer : `s, p = calc(2, 3)`.
+
+@@ id=fo03 | theme=fonctions | type=multi
+Avec `def carre_cube(lcarre, lcube):` qui renvoie `liste1, liste2`, quels appels sont valides et donnent bien les carrés de `val1` et les cubes de `val2` ?
+[x] `a, b = carre_cube(val1, val2)`
+[x] `a, b = carre_cube(lcube=val2, lcarre=val1)`
+[ ] `a, b = carre_cube(val2, val1)`
+[ ] `a, b = carre_cube(lcarre=val1)`
+>>> Par position, l'ordre compte ; par nom (arguments nommés), l'ordre est libre. Le dernier appel oublie l'argument `lcube` → TypeError.
+
+@@ id=fo04 | theme=fonctions | type=single
+Que vaut `[x^2 for x in [2, 3]]` ?
+[ ] `[4, 9]`
+[x] `[0, 1]`
+[ ] `[4, 6]`
+[ ] Une erreur
+>>> `^` est un OU exclusif bit à bit : 2 ^ 2 = 0 et 3 ^ 2 = 1. Le carré s'écrit `x**2`. (Erreur présente dans l'exemple `carre` du cours !)
+
+@@ id=fo05 | theme=fonctions | type=single
+Avec `f = lambda x, y: x - y`, que vaut `f(10, 4)` ?
+[x] 6
+[ ] -6
+[ ] 14
+[ ] Une erreur : une lambda ne prend qu'un argument
+>>> Une lambda est une fonction anonyme en une ligne ; elle peut avoir plusieurs paramètres.
+
+@@ id=fo06 | theme=fonctions | type=multi
+Soit la fonction suivante. Quelles affirmations sont correctes ?
+```python
+def moyenne(notes, arrondi=2):
+    return round(sum(notes) / len(notes), arrondi)
+```
+[x] `moyenne([10, 11, 13])` vaut `11.33`
+[ ] `moyenne([10, 11, 13])` vaut `11.333333333333334`
+[x] `moyenne(arrondi=1, notes=[1, 2])` vaut `1.5`
+[x] `moyenne()` provoque une erreur
+[ ] Le paramètre `arrondi` doit toujours être fourni
+>>> `arrondi=2` est une **valeur par défaut** : on peut l'omettre. `notes` n'en a pas → `moyenne()` lève une TypeError.
+
+@@ id=fo07 | theme=fonctions | type=single
+Avec `jour` correspondant au 25 septembre 2026, que renvoie `jour.strftime('%d/%m/%Y')` ?
+[x] `'25/09/2026'`
+[ ] `'09/25/2026'`
+[ ] `'2026-09-25'`
+[ ] `'25/9/26'`
+>>> `%d` jour sur 2 chiffres, `%m` mois sur 2 chiffres, `%Y` année sur 4 chiffres.
+
+@@ id=sc01 | theme=structures | type=single
+Quel est le type de `ma_var = ("Pommes", 10, "Bananes", 3, "Dattes", 5, "Figue", 8)` ?
+[ ] Dictionnaire
+[x] Tuple
+[ ] Liste de listes
+[ ] Liste
+>>> Des **parenthèses** et des virgules → tuple (question 1 de l'annale 2025). Dictionnaire : `{clé: valeur}` ; liste : `[ ]`.
+
+@@ id=sc02 | theme=structures | type=single
+Que se passe-t-il avec `t = (1, 2, 3)` puis `t[0] = 5` ?
+[ ] `t` vaut `(5, 2, 3)`
+[ ] `t` vaut `(5, 1, 2, 3)`
+[x] Une erreur TypeError : un tuple n'est pas modifiable
+[ ] `t` vaut `5`
+>>> Un tuple est **immuable**.
+
+@@ id=sc03 | theme=structures | type=multi
+Soit `liste = [['Paul', 23], ['Emmanuelle', 35], ['Thibault', 18], ['Lola', 28]]`. Quelles affirmations sont correctes ?
+[x] `liste[3][0]` vaut `'Lola'`
+[x] `liste[1:3]` vaut `[['Emmanuelle', 35], ['Thibault', 18]]`
+[ ] `liste[0][1]` vaut `'Paul'`
+[x] `for nom, age in liste:` donne à chaque tour un nom et un âge
+[ ] `len(liste)` vaut 8
+>>> `liste[i]` = la i-ème sous-liste, `liste[i][j]` = son j-ième élément : `liste[0][1]` vaut 23. Il y a 4 sous-listes, donc `len(liste)` = 4.
+
+@@ id=sc04 | theme=structures | type=multi
+Soit `capitales = {'France': 'Paris', 'Espagne': 'Madrid', 'Portugal': 'Lisbonne'}`. Quelles affirmations sont correctes ?
+[x] `capitales['France']` vaut `'Paris'`
+[ ] `capitales[0]` vaut `'Paris'`
+[x] `capitales['Italie'] = 'Rome'` ajoute une entrée
+[x] `for val in capitales: print(val)` affiche les pays (les clés)
+[ ] `capitales.clear()` supprime la variable `capitales`
+>>> On accède par **clé**, pas par indice (`capitales[0]` → KeyError). Itérer sur un dictionnaire donne ses clés. `clear()` **vide** le dictionnaire (il existe toujours, vide) ; c'est `del capitales` qui supprime la variable.
+
+@@ id=sc05 | theme=structures | type=single
+Après `d = {'a': 1, 'b': 2}` puis `x = d.pop('a')`, que valent `x` et `d` ?
+[x] `x = 1` et `d = {'b': 2}`
+[ ] `x = 'a'` et `d = {'b': 2}`
+[ ] `x = {'a': 1}` et `d = {'b': 2}`
+[ ] `x = 2` et `d = {'a': 1}`
+>>> `pop(clé)` supprime l'entrée et renvoie sa **valeur**.
+
+@@ id=sc06 | theme=structures | type=single
+Que vaut `len({'x': [1, 2, 3], 'y': [4]})` ?
+[ ] 4
+[x] 2
+[ ] 3
+[ ] 1
+>>> `len` d'un dictionnaire = nombre de **clés**.
+
+@@ id=sc07 | theme=structures | type=single
+Que donne `print(capitales.items())` pour `capitales = {'France': 'Paris'}` ?
+[x] `dict_items([('France', 'Paris')])`
+[ ] `['France', 'Paris']`
+[ ] `{'France': 'Paris'}`
+[ ] `('France', 'Paris')`
+>>> `items()` renvoie les couples **(clé, valeur)** sous forme de tuples, utilisables dans `for cle, valeur in capitales.items():`.
+
+@@ id=sc08 | theme=structures | type=single
+Qu'affiche la première itération de cette boucle ?
+```python
+liste = [['Paul', 23], ['Emmanuelle', 35]]
+for i in liste:
+    for j in i:
+        print(j)
+```
+[x] `Paul` puis `23`
+[ ] `['Paul', 23]`
+[ ] `Paul` puis `Emmanuelle`
+[ ] `0` puis `1`
+>>> La boucle externe donne chaque sous-liste ; la boucle interne parcourt ses éléments. Au total : Paul, 23, Emmanuelle, 35.
+
+@@ id=np01 | theme=numpy | type=single
+Que vaut `np.arange(2, 15, 3)` ?
+[x] `array([ 2,  5,  8, 11, 14])`
+[ ] `array([ 2,  5,  8, 11, 14, 17])`
+[ ] `array([ 2.,  5.25,  8.5, 11.75, 15.])`
+[ ] `array([3, 6, 9, 12])`
+>>> `arange` fonctionne comme `range` (fin exclue) mais renvoie un tableau numpy.
+
+@@ id=np02 | theme=numpy | type=single
+Que vaut `np.linspace(1, 10, 5)` ?
+[ ] `array([1, 3, 5, 7, 9])`
+[x] `array([ 1.  ,  3.25,  5.5 ,  7.75, 10.  ])`
+[ ] `array([1, 10, 5])`
+[ ] `array([ 1.,  2.8,  4.6,  6.4,  8.2])`
+>>> `linspace(début, fin, nombre)` : 5 valeurs régulièrement espacées, **fin incluse** (pas = 9/4 = 2,25).
+
+@@ id=np03 | theme=numpy | type=single
+Avec `a = np.array([[1, 2], [3, 4]])` et `b = np.array([[5, 6], [7, 8]])`, que vaut `np.dot(a, b)` ?
+[ ] `[[5, 12], [21, 32]]`
+[x] `[[19, 22], [43, 50]]`
+[ ] `[[6, 8], [10, 12]]`
+[ ] `[[23, 34], [31, 46]]`
+>>> Produit matriciel : 1×5 + 2×7 = 19, 1×6 + 2×8 = 22, 3×5 + 4×7 = 43, 3×6 + 4×8 = 50. `a * b` donnerait le produit terme à terme `[[5, 12], [21, 32]]`.
+
+@@ id=np04 | theme=numpy | type=single
+`tab1` est de forme (2, 3) et `tab2` de forme (3, 2). Quelle est la forme de `np.dot(tab1, tab2)` ?
+[x] (2, 2)
+[ ] (3, 3)
+[ ] (2, 3)
+[ ] Erreur : les formes sont différentes
+>>> (2, **3**) · (**3**, 2) → (2, 2). Les dimensions intérieures doivent être égales. `tab1 * tab2` échouerait, lui.
+
+@@ id=np05 | theme=numpy | type=multi
+Quelles affirmations sur NaN sont correctes ?
+[x] `math.isnan(np.nan)` vaut `True`
+[ ] `np.nan == np.nan` vaut `True`
+[x] `type(np.nan)` est `float`
+[x] `np.nan + 1` vaut `nan`
+[x] `pd.isna(np.nan)` vaut `True`
+>>> NaN n'est égal à rien, pas même à lui-même : on le teste avec `math.isnan`, `np.isnan` ou `pd.isna`. Tout calcul avec NaN donne NaN.
+
+@@ id=np06 | theme=numpy | type=single
+Avec `tab1 = np.array([[2, 5, 12], [4, 2, 91]])`, que vaut `tab1[1][2]` ?
+[x] 91
+[ ] 5
+[ ] 12
+[ ] 2
+>>> Ligne d'indice 1 : `[4, 2, 91]`, élément d'indice 2 : 91. S'écrit aussi `tab1[1, 2]`.
+
+@@ id=np07 | theme=numpy | type=multi
+Quelles affirmations sont correctes ?
+[x] `[1, 2, 3] * 2` (liste Python) vaut `[1, 2, 3, 1, 2, 3]`
+[x] `np.array([1, 2, 3]) * 2` vaut `array([2, 4, 6])`
+[x] `np.cos(np.array([0, 0]))` vaut `array([1., 1.])`
+[ ] `np.array([1, 2]) * np.array([1, 2, 3])` vaut `array([1, 4, 3])`
+>>> Sur une liste, `*` répète ; sur un array, `*` multiplie chaque élément. Les fonctions numpy s'appliquent élément par élément. Deux arrays de formes incompatibles (2 et 3) provoquent une erreur.
+
+@@ id=cs01 | theme=csv | type=single
+Avec `csv.DictReader`, sous quelle forme obtient-on chaque ligne du fichier ?
+[ ] Une liste de valeurs
+[x] Un dictionnaire dont les clés sont les noms des colonnes
+[ ] Un DataFrame
+[ ] Un tuple
+>>> On stocke souvent les lignes dans une **liste de dictionnaires**. `csv.reader`, lui, donne une liste de valeurs par ligne.
+
+@@ id=cs02 | theme=csv | type=single
+On lit un fichier de notes avec le module `csv`. De quel type sont les nombres lus ?
+[ ] int
+[ ] float
+[x] str
+[ ] Cela dépend de la valeur
+>>> Le module `csv` lit **tout en texte** : il faut convertir avec `float(...)` ou `int(...)`. pandas, lui, détecte les types.
+
+@@ id=cs03 | theme=csv | type=multi
+Quelles affirmations sur les fichiers CSV sont correctes ?
+[x] Les fichiers français utilisent souvent le point-virgule comme délimiteur
+[x] `writeheader()` écrit la ligne d'en-tête avec un `DictWriter`
+[ ] Il est inutile de fermer un fichier ouvert avec `open()`
+[x] Les fichiers anglo-saxons utilisent souvent la virgule comme délimiteur
+[ ] `csv.DictWriter` n'a pas besoin de connaître les noms des colonnes
+>>> On ferme le fichier avec `file.close()` (ou on utilise `with open(...) as f:`). `DictWriter` a besoin de `fieldnames=[...]`.
+
+@@ id=cs04 | theme=csv | type=multi
+À propos de `pd.read_csv('pop.csv', sep=';', decimal=',', encoding='utf-8')`, quelles affirmations sont correctes ?
+[x] `sep=';'` indique le séparateur de colonnes
+[x] `decimal=','` permet de lire `3,5` comme le nombre 3.5
+[ ] L'index créé automatiquement commence à 1
+[x] `encoding='utf-8'` précise l'encodage du fichier
+[ ] Sans `dtype='object'`, toutes les colonnes sont lues comme du texte
+>>> L'index automatique va de **0** à n − 1. C'est au contraire **avec** `dtype='object'` que tout est lu en texte ; sans, pandas détecte les types.
+
+@@ id=re01 | theme=regex | type=single
+Dans une expression régulière, que signifie `^` placé au début du motif ?
+[x] La chaîne doit commencer par…
+[ ] La chaîne doit finir par…
+[ ] « ou »
+[ ] N'importe quel caractère
+>>> `^` : commence par ; `$` : finit par ; `|` : ou ; `.` : n'importe quel caractère.
+
+@@ id=re02 | theme=regex | type=single
+Quel motif vérifie qu'une chaîne est **exactement** un code postal de 5 chiffres ?
+[ ] `r"\d+"`
+[ ] `r"[0-9]{5}"`
+[x] `r"^\d{5}$"`
+[ ] `r"\w{5}"`
+>>> Sans `^` et `$`, `[0-9]{5}` trouverait 5 chiffres **à l'intérieur** de « 931601 » ou « AB93160 ». `\w` accepte aussi les lettres.
+
+@@ id=re03 | theme=regex | type=single
+Que renvoie `re.findall(r"\d+", "Il a 28 ans et 3 chats")` ?
+[x] `['28', '3']`
+[ ] `[28, 3]`
+[ ] `['2', '8', '3']`
+[ ] `'28'`
+>>> `\d+` = un ou plusieurs chiffres consécutifs. `findall` renvoie une **liste de chaînes**.
+
+@@ id=re04 | theme=regex | type=single
+Que renvoie `re.match("vient", "Pierre vient d'avoir 28 ans")` ?
+[ ] Un objet match pour « vient »
+[x] `None`
+[ ] `['vient']`
+[ ] `True`
+>>> `re.match` ne cherche qu'**au début** de la chaîne. Pour chercher n'importe où : `re.search`.
+
+@@ id=re05 | theme=regex | type=multi
+Quelles correspondances sont correctes ?
+[x] `\d` : un chiffre
+[x] `\s` : un caractère blanc (espace, tabulation, retour à la ligne…)
+[ ] `\W` : une lettre
+[ ] `\S` : un espace
+[x] `.` : n'importe quel caractère (sauf retour à la ligne)
+>>> Les majuscules sont les **contraires** : `\W` = tout ce qui n'est pas lettre/chiffre/_ ; `\S` = tout sauf un blanc ; `\D` = tout sauf un chiffre.
+
+@@ id=re06 | theme=regex | type=single
+Que renvoie `re.sub(r"(\d{4})-(\d{2})-(\d{2})", r"\3/\2/\1", "2026-09-25")` ?
+[x] `'25/09/2026'`
+[ ] `'2026/09/25'`
+[ ] `'09/25/2026'`
+[ ] `'\3/\2/\1'`
+>>> Les groupes de capture : \1 = 2026, \2 = 09, \3 = 25. On les réordonne dans le remplacement (exercice du TD).
+
+@@ id=re07 | theme=regex | type=single
+Que renvoie `re.search(r"(\d+) ans", "Paul a 23 ans").group(1)` ?
+[x] `'23'`
+[ ] `'23 ans'`
+[ ] `23`
+[ ] `'Paul'`
+>>> `.group()` (ou `.group(0)`) donne toute la correspondance « 23 ans » ; `.group(1)` donne le 1er groupe de capture, toujours sous forme de chaîne.
+
+@@ id=re08 | theme=regex | type=single
+Quel motif trouve séparément `<a>` et `<b>` dans la chaîne `"<a><b>"` avec `re.findall` ?
+[ ] `r"<.*>"`
+[x] `r"<.*?>"`
+[ ] `r"<.+>"`
+[ ] `r"^<.*>$"`
+>>> `.*` est **gourmand** : il prend `<a><b>` en entier. `.*?` est **paresseux** (lazy) : il s'arrête au premier `>` possible.
+
+@@ id=re09 | theme=regex | type=single
+Que renvoie `re.findall(r"(\w+)@(\w+)\.fr", "jean@esiee.fr et paul@free.fr")` ?
+[x] `[('jean', 'esiee'), ('paul', 'free')]`
+[ ] `['jean@esiee.fr', 'paul@free.fr']`
+[ ] `['jean', 'esiee', 'paul', 'free']`
+[ ] `[('jean@esiee.fr',), ('paul@free.fr',)]`
+>>> Avec **plusieurs groupes** de capture, `findall` renvoie une liste de **tuples** (un élément par groupe). Le `\.` désigne un vrai point.
+
+@@ id=re10 | theme=regex | type=multi
+Quelles affirmations sur les quantificateurs sont correctes ?
+[x] `+` : une ou plusieurs occurrences du caractère précédent
+[x] `*` : zéro, une ou plusieurs occurrences
+[x] `?` : zéro ou une occurrence
+[ ] `{3}` : au moins 3 occurrences
+[ ] `[0-9]+` accepte la chaîne vide
+>>> `{3}` = exactement 3 (au moins 3 s'écrirait `{3,}`). `+` exige au moins un caractère.
+
+@@ id=re11 | theme=regex | type=single
+Quel code nettoie `"Les  E4FE \t sont   là"` en `"Les E4FE sont là"` ?
+[x] `re.sub(r"\s+", " ", texte)`
+[ ] `re.sub(r"\s", "", texte)`
+[ ] `re.split(r"\s+", texte)`
+[ ] `re.findall(r"\s+", texte)`
+>>> `\s+` capture chaque groupe d'espaces/tabulations consécutifs, remplacé par un seul espace. `re.sub(r"\s", "", ...)` collerait tous les mots ; `split` renvoie une liste.
+
+@@ id=er01 | theme=erreurs | type=single
+Quelle exception provoque `print(variable_jamais_definie)` ?
+[x] NameError
+[ ] KeyError
+[ ] ValueError
+[ ] TypeError
+>>> Variable inexistante → **NameError** (exemple `try / except NameError` du cours).
+
+@@ id=er02 | theme=erreurs | type=multi
+Associe correctement : quelles affirmations sont vraies ?
+[x] `[1, 2, 3][5]` provoque une IndexError
+[x] `{'a': 1}['b']` provoque une KeyError
+[x] `int("12a")` provoque une ValueError
+[ ] `"3" + 4` provoque une ValueError
+[x] `1 / 0` provoque une ZeroDivisionError
+>>> `"3" + 4` mélange str et int : c'est une **TypeError**.
+
+@@ id=er03 | theme=erreurs | type=single
+Qu'affiche ce code ?
+```python
+try:
+    r = 6 / 0
+except ZeroDivisionError:
+    print("Division par zéro")
+else:
+    print("OK")
+finally:
+    print("Fin")
+```
+[x] « Division par zéro » puis « Fin »
+[ ] « Division par zéro » puis « OK » puis « Fin »
+[ ] « OK » puis « Fin »
+[ ] Le programme s'arrête sur une erreur
+>>> `else` ne s'exécute que s'il n'y a **pas** eu d'erreur ; `finally` s'exécute **dans tous les cas**.
+
+@@ id=er04 | theme=erreurs | type=single
+Avec la classe du cours, qu'affiche `print(E1.prenom)` ?
+```python
+class E4FE:
+    def __init__(self, nom, prenom, groupe):
+        self.nom = nom
+        self.prenom = prenom
+        self.groupe = groupe
+
+E1 = E4FE('Potiron', 'Paul', 1)
+```
+[ ] Potiron
+[x] Paul
+[ ] 1
+[ ] Une erreur : il manque l'argument self
+>>> `self` est passé automatiquement ; les arguments suivants remplissent `nom`, `prenom`, `groupe` dans l'ordre.
+
+@@ id=er05 | theme=erreurs | type=single
+Quel est le rôle de la méthode `__init__` dans une classe ?
+[x] C'est le constructeur : elle est appelée à la création de l'objet pour initialiser ses attributs
+[ ] Elle supprime l'objet
+[ ] Elle importe la classe depuis un autre fichier
+[ ] Elle affiche l'objet
+>>> Pour importer une classe d'un autre fichier : `from nom_fichier import nom_classe`.
+
+@@ id=er06 | theme=erreurs | type=single
+Quelle exception obtient-on en appelant `df.unique()` sur un DataFrame pandas ?
+[ ] KeyError
+[x] AttributeError
+[ ] ValueError
+[ ] Aucune, cela renvoie les lignes uniques
+>>> `unique()` n'existe que pour une **Series** (une colonne) : `df['col'].unique()`. Appeler une méthode inexistante → AttributeError.

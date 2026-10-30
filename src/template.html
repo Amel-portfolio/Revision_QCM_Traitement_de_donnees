@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Révision QCM TAD</title>
+<meta name="description" content="Site de révision du QCM « Traitement et analyse de données » : résumés, flashcards, quiz, QCM blancs, annale corrigée.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f4bd8'/%3E%3Ctext x='16' y='21' font-family='Arial' font-size='12' font-weight='700' text-anchor='middle' fill='white'%3ETAD%3C/text%3E%3C/svg%3E">
+<style>
+/*__CSS__*/
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar" aria-label="Navigation">
+    <div class="brand">
+      <div class="logo">TAD</div>
+      <div>
+        <div class="brand-title">Révision QCM</div>
+        <div class="brand-sub">Traitement &amp; analyse de données</div>
+      </div>
+    </div>
+    <nav id="nav">
+      <a href="#/" data-nav="home"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>Tableau de bord</a>
+      <div class="nav-group">Apprendre</div>
+      <a href="#/cours" data-nav="cours"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6.5A2.5 2.5 0 0 0 4 21.5v-2z"/><path d="M8 7h8M8 11h6"/></svg>Résumés de cours</a>
+      <a href="#/notions" data-nav="notions"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></svg>Notions clés &amp; pièges</a>
+      <a href="#/td" data-nav="td"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg>TD corrigés</a>
+      <div class="nav-group">S'entraîner</div>
+      <a href="#/flashcards" data-nav="flashcards"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 2h12a2 2 0 0 1 2 2v12"/></svg>Flashcards</a>
+      <a href="#/quiz" data-nav="quiz"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg>Quiz par thème</a>
+      <a href="#/erreurs" data-nav="erreurs"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Mes erreurs<span class="count hide" id="err-count"></span></a>
+      <div class="nav-group">Examen</div>
+      <a href="#/qcm" data-nav="qcm"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>QCM blancs</a>
+      <a href="#/annales" data-nav="annales"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>Annale 2025 corrigée</a>
+      <div class="nav-group">Outils</div>
+      <a href="#/sandbox" data-nav="sandbox"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 3 14 9-14 9V3z"/></svg>Bac à sable Python</a>
+    </nav>
+    <div class="sidebar-foot">
+      <button class="btn small" id="theme-toggle" type="button">Thème : auto</button>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="main-wrap">
+    <header class="topbar">
+      <button class="icon-btn" id="menu-btn" type="button" aria-label="Ouvrir le menu">☰</button>
+      <span>Révision QCM TAD</span>
+    </header>
+    <main id="main" tabindex="-1"></main>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="ask-modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ask-title">
+    <header>
+      <h2 id="ask-title">Demander à Claude</h2>
+      <span class="spacer"></span>
+      <button class="icon-btn" type="button" data-close aria-label="Fermer">✕</button>
+    </header>
+    <div class="modal-body">
+      <div>
+        <span class="field-label">Ce sur quoi tu bloques</span>
+        <div class="ask-ctx md" id="ask-ctx"></div>
+      </div>
+      <div>
+        <span class="field-label">Type d'aide</span>
+        <div class="chips" id="ask-modes"></div>
+      </div>
+      <label class="check-line" id="ask-include-wrap"><input type="checkbox" id="ask-include"> Inclure la correction du site dans le prompt</label>
+      <div>
+        <label class="field-label" for="ask-q">Ta question</label>
+        <textarea id="ask-q" placeholder="Ex. : Pourquoi .loc inclut la borne de fin alors que .iloc l'exclut ?"></textarea>
+      </div>
+      <div>
+        <span class="field-label">Prompt prêt à copier</span>
+        <textarea id="ask-prompt" readonly rows="9"></textarea>
+      </div>
+    </div>
+    <footer>
+      <span class="muted small" style="margin-right:auto">Colle-le dans Claude (claude.ai ou ta session Claude Code).</span>
+      <button class="btn" type="button" id="ask-copy">Copier le prompt</button>
+      <button class="btn primary" type="button" id="ask-open">Copier et ouvrir Claude</button>
+    </footer>
+  </div>
+</div>
+
+<!--__CONTENT__-->
+<script>
+/*__JS__*/
+</script>
+</body>
+</html>
